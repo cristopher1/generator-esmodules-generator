@@ -61,24 +61,24 @@ export default class GeneratorQualityNpmPackage extends Generator {
     this.composeWith(generator)
   }
 
-  #addBabel(options) {
+  #addBabel() {
     const generator = this.#generatorProvider.getBabelGenerator()
-    this.composeWith(generator, options)
+    this.composeWith(generator)
   }
 
-  #addJest(options) {
+  #addJest(args) {
     const generator = this.#generatorProvider.getJestGenerator()
-    this.composeWith(generator, options)
+    this.composeWith(generator, args)
   }
 
-  #addCommitLint(options) {
+  #addCommitLint() {
     const generator = this.#generatorProvider.getCommitLintGenerator()
-    this.composeWith(generator, options)
+    this.composeWith(generator)
   }
 
-  #addRollup(options) {
+  #addRollup() {
     const generator = this.#generatorProvider.getRollupGenerator()
-    this.composeWith(generator, options)
+    this.composeWith(generator)
   }
 
   #addLicense(options) {
@@ -87,8 +87,7 @@ export default class GeneratorQualityNpmPackage extends Generator {
   }
 
   configuring() {
-    const { packageType, includeLicense } = this.answers
-    const packageConfig = packageType === 'module' ? { esmodules: true } : {}
+    const { includeLicense } = this.answers
 
     this.#addGit()
     this.#addEslint()
@@ -97,10 +96,10 @@ export default class GeneratorQualityNpmPackage extends Generator {
     this.#addPrettier()
     this.#addTypeScript()
 
-    this.#addBabel(packageConfig)
-    this.#addJest(packageConfig)
-    this.#addCommitLint(packageConfig)
-    this.#addRollup(packageConfig)
+    this.#addBabel()
+    this.#addJest([this.answers.generatorName])
+    this.#addCommitLint()
+    this.#addRollup()
 
     if (includeLicense) {
       const licenseOptions = {
@@ -131,8 +130,8 @@ export default class GeneratorQualityNpmPackage extends Generator {
 
   conflicts() {
     this.packageJson.merge({
-      name: this.answers.packageName,
-      description: this.answers.packageDescription,
+      name: this.answers.generatorName,
+      description: this.answers.generatorDescription,
       type: this.answers.packageType,
       author: {
         name: this.answers.authorName,
@@ -147,17 +146,9 @@ export default class GeneratorQualityNpmPackage extends Generator {
           ? `${this.answers.urlRepository}/issues`
           : '',
       },
-      keywords: this.#getKeywords(this.answers.packageKeywords),
-      homepage: this.answers.packageWebsite,
+      keywords: this.#getKeywords(this.answers.generatorKeywords),
+      homepage: this.answers.generatorWebsite,
     })
-
-    if (this.answers.packageType === 'module') {
-      this.packageJson.merge({
-        scripts: {
-          test: 'node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose',
-        },
-      })
-    }
   }
 
   #runGitInit() {
