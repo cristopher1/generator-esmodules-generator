@@ -76,11 +76,6 @@ export default class GeneratorQualityNpmPackage extends Generator {
     this.composeWith(generator)
   }
 
-  #addRollup() {
-    const generator = this.#generatorProvider.getRollupGenerator()
-    this.composeWith(generator)
-  }
-
   #addLicense(options) {
     const generator = this.#generatorProvider.getLicenseGenerator()
     this.composeWith(generator, options)
@@ -99,7 +94,6 @@ export default class GeneratorQualityNpmPackage extends Generator {
     this.#addBabel()
     this.#addJest([this.answers.generatorName])
     this.#addCommitLint()
-    this.#addRollup()
 
     if (includeLicense) {
       const licenseOptions = {

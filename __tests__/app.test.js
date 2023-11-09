@@ -296,15 +296,6 @@ describe('generator-esmodules-generator:app', () => {
         })
       })
 
-      describe('rollup', () => {
-        it('Should generate the rollup.config.js file that exports the configuration using "export default" statement', () => {
-          // Assert
-          assert.fileContent([
-            ['rollup.config.js', 'export default defineConfig(['],
-          ])
-        })
-      })
-
       describe('typescript', () => {
         it('Should generate the tsconfig.json file', () => {
           // Assert
