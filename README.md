@@ -37,7 +37,7 @@ The structure created by this generator includes:
 
 Example of a generator created by `generator-esmodules-generator`:
 
-![generated_by_generator_esmodules_generator](https://github.com/cristopher1/generator-esmodules-generator/assets/21159930/15e7cea2-a028-40e3-aaa7-f3f24a58191b)
+![Captura de pantalla (10)](https://github.com/cristopher1/generator-esmodules-generator/assets/21159930/91f6dc7a-8160-46de-882e-1776490131fc)
 
 ### [Index](#index)
 
@@ -119,21 +119,21 @@ The more important scripts added into the package.json created by this generator
 - Yeoman can be too opinionated at times but is easily convinced not to be.
 - Feel free to [learn more about Yeoman](http://yeoman.io/).
 
-## Author
+## <a id="author"></a> Author
 
 👤 **Cristopher Jiménez**
 
 - Github: [@cristopher1](https://github.com/cristopher1)
 
-## 🤝 Contributing
+## <a id="contributing"></a> 🤝 Contributing
 
 Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/cristopher1/generator-esmodules-generator/issues).
 
-## Show your support
+## <a id="support"></a> Show your support
 
 Give a ⭐️ if this project helped you!
 
-## 📝 License
+## <a id="license"></a> 📝 License
 
 Copyright © 2023 [Cristopher Jiménez](https://github.com/cristopher1).<br />
 This project is [MIT](https://github.com/cristopher1/generator-esmodules-generator/blob/master/LICENSE) licensed.
