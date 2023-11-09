@@ -1,10 +1,6 @@
 {
   "include": ["generators/**/index.js"],
-  "exclude": [
-    "node_modules",
-    "generators/**/templates",
-    "generators/**/generator_components"
-  ],
+  "exclude": ["node_modules", "generators/**/templates"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
