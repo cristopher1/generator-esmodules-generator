@@ -37,7 +37,7 @@ npm run test
 
 👤 **Cristopher Jiménez**
 
-* Github: [@cristopher1](https://github.com/cristopher1)
+- Github: [@cristopher1](https://github.com/cristopher1)
 
 ## 🤝 Contributing
 
@@ -52,5 +52,6 @@ Give a ⭐️ if this project helped you!
 Copyright © 2023 [Cristopher Jiménez](https://github.com/cristopher1).<br />
 This project is [MIT](https://github.com/cristopher1/generator-esmodules-generator/blob/master/LICENSE) licensed.
 
-***
+---
+
 _This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
