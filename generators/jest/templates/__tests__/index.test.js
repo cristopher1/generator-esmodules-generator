@@ -7,7 +7,7 @@ import helpers from 'yeoman-test'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-describe('<%= generatorName %>:app', () => {
+describe('<%- generatorName %>:app', () => {
   describe('create a project', () => {
     const answers = {}
 
