@@ -17,21 +17,107 @@
 
 ### 🏠 [Homepage](https://github.com/cristopher1/generator-esmodules-generator)
 
-## Prerequisites
+The `generator-esmodules-generator` provides a structure to create a yeoman generator using ES Modules.
+
+The structure created by this generator includes:
+
+- [Jest](https://jestjs.io/)
+- [Babel](https://babeljs.io/) with [@babel/cli](https://babeljs.io/docs/babel-cli), [@babel/core](https://babeljs.io/docs/babel-core),
+  [@babel/plugin-transform-runtime](https://babeljs.io/docs/babel-plugin-transform-runtime), [@babel/preset-env](https://babeljs.io/docs/babel-preset-env),
+  [@babel/runtime-corejs3](https://www.npmjs.com/package/@babel/runtime-corejs3) and [core-js](https://www.npmjs.com/package/core-js)
+- [Eslint](https://eslint.org/) with [eslint-config-prettier](https://www.npmjs.com/package/eslint-config-prettier), [eslint-config-standard](https://www.npmjs.com/package/eslint-config-standard),
+  [eslint-plugin-jest](https://www.npmjs.com/package/eslint-plugin-jest), [eslint-plugin-jsdoc](https://www.npmjs.com/package/eslint-plugin-jsdoc), etc.
+- [Prettier](https://prettier.io/) with [prettier-plugin-jsdoc](https://www.npmjs.com/package/prettier-plugin-jsdoc)
+- [Lint-staged](https://www.npmjs.com/package/lint-staged)
+- [Faker](https://fakerjs.dev/)
+- [Commitlint](https://commitlint.js.org/#/)
+- [Readme-md-generator](https://github.com/kefranabg/readme-md-generator)
+- [Husky](https://www.npmjs.com/package/husky)
+- Others
+
+Example of a generator created by `generator-esmodules-generator`:
+
+![generated_by_generator_esmodules_generator](https://github.com/cristopher1/generator-esmodules-generator/assets/21159930/15e7cea2-a028-40e3-aaa7-f3f24a58191b)
+
+### [Index](#index)
+
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [The configuration files](#configuration-files)
+- [The scripts in package.json](#scripts)
+- [Getting To Know Yeoman](#know-yeoman)
+- [Author](#author)
+- [Contributing](#contributing)
+- [Show your support](#support)
+- [License](#license)
+
+## <a id="prerequisites"></a> Prerequisites
 
 - npm >= 4.0.0
 
-## Install
+## <a id="installation"></a> Installation
 
-```sh
-npm install
+First, install [Yeoman](http://yeoman.io) and generator-esmodules-generator using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
+
+```bash
+npm install -g yo
+npm install -g generator-esmodules-generator
 ```
 
-## Run tests
+Then generate your new project:
 
-```sh
-npm run test
+```bash
+yo esmodules-generator
 ```
+
+## <a id="configuration-files"></a> The configuration files
+
+The configuration files included are:
+
+- Eslint: `.eslintignore` (the files and directories ignored by eslint) and `.eslintrc.json` (configuration used by eslint).
+- Git: `.gitignore` (the files and directories ignored by git).
+- Lint-staged: `.lintstagedrc.json` (configuration used by lint-staged).
+- Prettier: `.prettierignore` (the files and directories ignored by prettier) and `.prettierrc.json` (configuration used by prettier).
+- Babel: `babel.config.json` (configuration used by babel):
+
+  - The `env.buildCommonjs` contains the configuration used to transpile the source code to es5.
+
+  - The `env.buildESmodules` contains the configuration used to transpile the source code to es6.
+
+- Commitlint: `commitlint.config.js` (configuration used by commitlint).
+
+- Jest: `jest.config.js` (configuration used by jest).
+
+- TypeScript: `tsconfig.json` (configuration used by TypeScript compiler).
+
+## <a id="scripts"></a> The scripts in package.json
+
+The more important scripts added into the package.json created by this generator are:
+
+- `"init"`: Runs the commands necessary to initialize the package, for example `init:husky`. It executed automatically when `Do you want to automatically run the scripts that configure the package, then installing the dependencies?` is yes.
+- `"documentation:create"`: Creates documentation using readme-md-generator. It executed automatically when `Do you want to automatically run the scripts that configure the package, then installing the dependencies?` is yes.
+- `"format"`: Checks the format using prettier.
+- `"format:fix"`: Fixes the format using prettier.
+- `"format:build-stage"` and `"format:build-stage:fix"`: similar to `"format"` and `"format:fix"`. They used when the `npm run build` is called.
+- `"lint"`: static code analysis using eslint.
+- `"lint:fix"`: Fixes the code using eslint.
+- `"lint:build-stage"` and `"lint:build-stage:fix"`: similar to `"lint"` and `"lint:fix"`. They are used when the `npm run build` is called.
+- `"build:tsc"`: Generates .d.ts files using the TypeScript compilator. It is used when the `npm run build` is called.
+- `"build:es5"`: Transpiles the source code to es5 using babel.
+- `"build:es6"`: Transpiles the source code to es6 using babel.
+- `"build"`: Generates the dist folder, that contains the cjs folder (source code transpiled to es5), the esm folder (source code transpiled to es6), and types folder (it contains the declaration files).
+- `"prepublishOnly"`: Used before publishing your package using `npm publish`. Runs `npm run build`.
+- `"test"`: Runs the tests using jest.
+- `"commitlint"`: Runs commitlint. It is used into .husky/commit-msg file. It is called by the commit-msg hook. See [git hook](https://www.atlassian.com/git/tutorials/git-hooks#:~:text=The%20commit%2Dmsg%20hook%20is,file%20that%20contains%20the%20message.).
+- `"lint-staged"`: Runs lint-staged. It is used into .husky/pre-commit file. It is called by the pre-commit hook. See [git hook](https://www.atlassian.com/git/tutorials/git-hooks#:~:text=The%20commit%2Dmsg%20hook%20is,file%20that%20contains%20the%20message.).
+- `"quality-check"`: Runs `npm run format && npm run lint && npm run test`. It is used into .husky/pre-push file. It is called by the pre-push hook See [git hook](https://www.atlassian.com/git/tutorials/git-hooks#:~:text=The%20commit%2Dmsg%20hook%20is,file%20that%20contains%20the%20message.).
+
+## <a id="know-yeoman"></a> Getting To Know Yeoman
+
+- Yeoman has a heart of gold.
+- Yeoman is a person with feelings and opinions, but is very easy to work with.
+- Yeoman can be too opinionated at times but is easily convinced not to be.
+- Feel free to [learn more about Yeoman](http://yeoman.io/).
 
 ## Author
 
@@ -41,7 +127,7 @@ npm run test
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/cristopher1/generator-esmodules-generator/issues). You can also take a look at the [contributing guide](https://github.com/cristopher1/generator-esmodules-generator/blob/master/CONTRIBUTING.md).
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/cristopher1/generator-esmodules-generator/issues).
 
 ## Show your support
 
