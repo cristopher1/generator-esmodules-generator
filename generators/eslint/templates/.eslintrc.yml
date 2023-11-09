@@ -1,0 +1,29 @@
+env:
+  browser: true
+  es2021: true
+
+extends: ['eslint:recommended', 'standard', 'prettier']
+
+overrides:
+  [
+    {
+      env: { node: true },
+      files: ['**/.eslintrc.{js,cjs}'],
+      parserOptions: { sourceType: 'script' },
+    },
+    {
+      files: ['generators/**/src/**/*.js'],
+      extends: ['plugin:jsdoc/recommended'],
+      plugins: ['jsdoc'],
+      rules: { 'jsdoc/tag-lines': 0 },
+    },
+    {
+      env: { node: true },
+      files: ['__tests__/**/*.js', 'generators/jest/**/*.js'],
+      extends: ['plugin:jest/recommended'],
+      plugins: ['jest'],
+      rules: { jest/expect-expect: 0, no-template-curly-in-string: 0 },
+    },
+  ]
+
+parserOptions: { ecmaVersion: 'latest', sourceType: 'module' }
