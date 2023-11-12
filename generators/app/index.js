@@ -4,7 +4,7 @@ import yosay from 'yosay'
 import { GeneratorProvider } from './generator_components/GeneratorProvider.js'
 import { PromptBuilder } from './generator_components/PromptBuilder.js'
 
-export default class GeneratorQualityNpmPackage extends Generator {
+export default class GeneratorEsmodulesGenerator extends Generator {
   #promptBuilder
   #generatorProvider
 

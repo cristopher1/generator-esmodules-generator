@@ -1,6 +1,6 @@
 {
   "name": "generator-esmodules-generator",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Yeoman generator to create yeoman generators based in ES Modules.",
   "homepage": "https://github.com/cristopher1/generator-esmodules-generator",
   "author": {
@@ -11,8 +11,8 @@
     "dist"
   ],
   "type": "module",
-  "main": "dist/cjs/generators/app/index.js",
-  "types": "dist/types/generators/app/index.d.ts",
+  "main": "./dist/cjs/generators/app/index.js",
+  "types": "./dist/types/generators/app/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/types/generators/app/index.d.ts",
