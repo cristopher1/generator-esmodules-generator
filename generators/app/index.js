@@ -20,7 +20,7 @@ export default class GeneratorQualityNpmPackage extends Generator {
     this.log(
       yosay(
         `Welcome to the glorious ${chalk.red(
-          'generator-quality-npm-package',
+          'generator-esmodules-generator',
         )} generator!`,
       ),
     )
@@ -107,22 +107,21 @@ export default class GeneratorQualityNpmPackage extends Generator {
   }
 
   writing() {
-    this.fs.copy(this.templatePath('./**/*'), this.destinationPath(''))
-  }
-
-  #getKeywords(packageKeywords) {
-    const keywords = packageKeywords.split(',')
-    const keywordsWithoutSpaces = keywords.map((elemenet) => {
-      return elemenet.trim()
-    })
-
-    if (keywordsWithoutSpaces.length === 1 && keywordsWithoutSpaces[0] === '') {
-      return []
-    }
-    return keywordsWithoutSpaces
-  }
-
-  conflicts() {
+    this.fs.copy(
+      this.templatePath('./generators/app/templates/index.js'),
+      this.destinationPath('generators/app/templates/index.js'),
+    )
+    this.fs.copyTpl(
+      this.templatePath('./generators/app/index.js'),
+      this.destinationPath('generators/app/index.js'),
+      {
+        generatorName: this.answers.generatorName,
+      },
+    )
+    this.fs.copy(
+      this.templatePath('./package.json'),
+      this.destinationPath('./package.json'),
+    )
     this.packageJson.merge({
       name: this.answers.generatorName,
       description: this.answers.generatorDescription,
@@ -143,6 +142,18 @@ export default class GeneratorQualityNpmPackage extends Generator {
       keywords: this.#getKeywords(this.answers.generatorKeywords),
       homepage: this.answers.generatorWebsite,
     })
+  }
+
+  #getKeywords(packageKeywords) {
+    const keywords = packageKeywords.split(',')
+    const keywordsWithoutSpaces = keywords.map((elemenet) => {
+      return elemenet.trim()
+    })
+
+    if (keywordsWithoutSpaces.length === 1 && keywordsWithoutSpaces[0] === '') {
+      return []
+    }
+    return keywordsWithoutSpaces
   }
 
   #runGitInit() {
