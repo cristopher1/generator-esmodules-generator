@@ -20,7 +20,7 @@ export default class GeneratorQualityNpmPackage extends Generator {
     this.log(
       yosay(
         `Welcome to the glorious ${chalk.red(
-          'generator-quality-npm-package',
+          'generator-esmodules-generator',
         )} generator!`,
       ),
     )
