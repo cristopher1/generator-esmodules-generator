@@ -11,28 +11,18 @@
     "dist"
   ],
   "type": "module",
-  "main": "dist/cjs/index.cjs",
-  "types": "dist/types/index.d.ts",
+  "main": "dist/cjs/generators/app/index.cjs",
+  "types": "dist/types/generators/app/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/types/app/index.d.ts",
+      "types": "./dist/types/generators/app/index.d.ts",
       "import": "./dist/esm/generators/app/index.js",
       "require": "./dist/cjs/generators/app/index.js"
     },
     "./app": {
-      "types": "./dist/types/app/index.d.ts",
+      "types": "./dist/types/generators/app/index.d.ts",
       "import": "./dist/esm/generators/app/index.js",
       "require": "./dist/cjs/generators/app/index.js"
-    },
-    "./babel": {
-      "types": "./dist/types/babel/index.d.ts",
-      "import": "./dist/esm/generators/babel/index.js",
-      "require": "./dist/cjs/generators/babel/index.js"
-    },
-    "./commitlint": {
-      "types": "./dist/types/commitlint/index.d.ts",
-      "import": "./dist/esm/generators/commitlint/index.js",
-      "require": "./dist/cjs/generators/commitlint/index.js"
     }
   },
   "keywords": [
