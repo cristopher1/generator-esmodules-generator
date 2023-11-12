@@ -107,7 +107,17 @@ export default class GeneratorQualityNpmPackage extends Generator {
   }
 
   writing() {
-    this.fs.copy(this.templatePath('./**/*'), this.destinationPath(''))
+    this.fs.copy(
+      this.templatePath('./generators/app/templates/index.js'),
+      this.destinationPath('generators/app/templates/index.js'),
+    )
+    this.fs.copyTpl(
+      this.templatePath('./generators/app/index.js'),
+      this.destinationPath('generators/app/index.js'),
+      {
+        generatorName: this.answers.generatorName,
+      },
+    )
   }
 
   #getKeywords(packageKeywords) {
