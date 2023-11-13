@@ -1,6 +1,6 @@
 {
   "name": "generator-esmodules-generator",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Yeoman generator to create yeoman generators based in ES Modules.",
   "homepage": "https://github.com/cristopher1/generator-esmodules-generator",
   "author": {
