@@ -8,7 +8,7 @@ export default class extends Generator {
     this.log(
       yosay(
         `Welcome to the glorious ${chalk.red(
-          'generator-quality-npm-package',
+          '<%= generatorName %>',
         )} generator!`,
       ),
     )

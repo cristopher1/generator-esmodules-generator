@@ -1,6 +1,6 @@
 {
   "name": "generator-esmodules-generator",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "Yeoman generator to create yeoman generators based in ES Modules.",
   "homepage": "https://github.com/cristopher1/generator-esmodules-generator",
   "author": {
@@ -11,18 +11,18 @@
     "dist"
   ],
   "type": "module",
-  "main": "./dist/cjs/generators/app/index.cjs",
+  "main": "./dist/cjs/generators/app/index.js",
   "types": "./dist/types/generators/app/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/types/generators/app/index.d.ts",
-      "import": "./dist/esm/generators/app/index.mjs",
-      "require": "./dist/cjs/generators/app/index.cjs"
+      "import": "./dist/esm/generators/app/index.js",
+      "require": "./dist/cjs/generators/app/index.js"
     },
     "./app": {
       "types": "./dist/types/generators/app/index.d.ts",
-      "import": "./dist/esm/generators/app/index.mjs",
-      "require": "./dist/cjs/generators/app/index.cjs"
+      "import": "./dist/esm/generators/app/index.js",
+      "require": "./dist/cjs/generators/app/index.js"
     }
   },
   "keywords": [
@@ -107,8 +107,8 @@
     "lint:build-stage:fix": "npm run lint:build-stage -- --fix",
     "build:clean": "rimraf dist",
     "build:tsc": "tsc",
-    "build:es5": "cross-env NODE_ENV=buildCommonJS npx babel --config-file ./babel.config.json generators --out-dir dist/cjs/generators --out-file-extension .cjs --ignore '/**/templates/' --copy-files --include-dotfiles",
-    "build:es6": "cross-env NODE_ENV=buildESmodules npx babel --config-file ./babel.config.json generators --out-dir dist/esm/generators --out-file-extension .mjs --ignore '/**/templates/' --copy-files --include-dotfiles",
+    "build:es5": "cross-env NODE_ENV=buildCommonJS npx babel --config-file ./babel.config.json generators --out-dir dist/cjs/generators --ignore '/**/templates/' --copy-files --include-dotfiles",
+    "build:es6": "cross-env NODE_ENV=buildESmodules npx babel --config-file ./babel.config.json generators --out-dir dist/esm/generators --ignore '/**/templates/' --copy-files --include-dotfiles",
     "prebuild": "npm run lint:build-stage && npm run format:build-stage:fix && npm run build:clean",
     "build": "npm run build:tsc && npm run build:es5 && npm run build:es6",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
