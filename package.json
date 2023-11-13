@@ -15,11 +15,11 @@
   "types": "./dist/types/generators/app/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/types/generators/index.d.ts",
+      "types": "./dist/types/generators/app/index.d.ts",
       "import": "./dist/generators/app/index.js"
     },
     "./app": {
-      "types": "./dist/types/generators/index.d.ts",
+      "types": "./dist/types/generators/app/index.d.ts",
       "import": "./dist/generators/app/index.js"
     }
   },
