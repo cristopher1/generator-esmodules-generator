@@ -39,7 +39,6 @@
     "husky",
     "jsdoc",
     "readme-md-generator",
-    "rollup",
     "lint-staged",
     "jest",
     "jsdoc",
