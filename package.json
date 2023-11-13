@@ -1,6 +1,6 @@
 {
   "name": "generator-esmodules-generator",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Yeoman generator to create yeoman generators based in ES Modules.",
   "homepage": "https://github.com/cristopher1/generator-esmodules-generator",
   "author": {
@@ -11,18 +11,16 @@
     "dist"
   ],
   "type": "module",
-  "main": "./dist/esm/generators/app/index.js",
+  "main": "./dist/generators/app/index.js",
   "types": "./dist/types/generators/app/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/types/generators/app/index.d.ts",
-      "import": "./dist/esm/generators/app/index.js",
-      "require": "./dist/cjs/generators/app/index.js"
+      "types": "./dist/types/generators/index.d.ts",
+      "import": "./dist/generators/app/index.js"
     },
     "./app": {
-      "types": "./dist/types/generators/app/index.d.ts",
-      "import": "./dist/esm/generators/app/index.js",
-      "require": "./dist/cjs/generators/app/index.js"
+      "types": "./dist/types/generators/index.d.ts",
+      "import": "./dist/generators/app/index.js"
     }
   },
   "keywords": [
@@ -39,7 +37,6 @@
     "husky",
     "jsdoc",
     "readme-md-generator",
-    "rollup",
     "lint-staged",
     "jest",
     "jsdoc",
@@ -82,9 +79,6 @@
     "yeoman-assert": "^3.1.1",
     "yeoman-test": "^8.2.0"
   },
-  "engines": {
-    "npm": ">= 4.0.0"
-  },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.22.11",
     "chalk": "^2.1.0",
@@ -107,10 +101,9 @@
     "lint:build-stage:fix": "npm run lint:build-stage -- --fix",
     "build:clean": "rimraf dist",
     "build:tsc": "tsc",
-    "build:es5": "cross-env NODE_ENV=buildCommonJS npx babel --config-file ./babel.config.json generators --out-dir dist/cjs/generators --ignore '/**/templates/' --copy-files --include-dotfiles",
-    "build:es6": "cross-env NODE_ENV=buildESmodules npx babel --config-file ./babel.config.json generators --out-dir dist/esm/generators --ignore '/**/templates/' --copy-files --include-dotfiles",
+    "build:es6": "cross-env NODE_ENV=buildESmodules npx babel --config-file ./babel.config.json generators --out-dir dist/generators --ignore '/**/templates/' --copy-files --include-dotfiles",
     "prebuild": "npm run lint:build-stage && npm run format:build-stage:fix && npm run build:clean",
-    "build": "npm run build:tsc && npm run build:es5 && npm run build:es6",
+    "build": "npm run build:tsc && npm run build:es6",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
     "commitlint": "npx commitlint --edit",
     "lint-staged": "npx lint-staged",
