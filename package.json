@@ -11,8 +11,8 @@
     "dist"
   ],
   "type": "module",
-  "main": "dist/cjs/generators/app/index.cjs",
-  "types": "dist/types/generators/app/index.d.ts",
+  "main": "./dist/cjs/generators/app/index.cjs",
+  "types": "./dist/types/generators/app/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/types/generators/app/index.d.ts",
