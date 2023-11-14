@@ -21,6 +21,10 @@
     "./app": {
       "types": "./dist/types/generators/app/index.d.ts",
       "import": "./dist/generators/app/index.js"
+    },
+    "./subgenerator": {
+      "types": "./dist/types/generators/subgenerator/index.d.ts",
+      "import": "./dist/generators/subgenerator/index.js"
     }
   },
   "keywords": [
