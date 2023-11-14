@@ -3,6 +3,7 @@ import chalk from 'chalk'
 import yosay from 'yosay'
 
 export default class extends Generator {
+  #answers
   async prompting() {
     // Have Yeoman greet the user.
     this.log(
@@ -20,7 +21,7 @@ export default class extends Generator {
       default: this.appname,
     }
 
-    this.answers = await this.prompt(prompts)
+    this.#answers = await this.prompt(prompts)
   }
 
   writing() {
@@ -28,7 +29,7 @@ export default class extends Generator {
   }
 
   end() {
-    const { projectName } = this.answers
+    const { projectName } = this.#answers
 
     this.log(`The ${projectName} is ready`)
   }
