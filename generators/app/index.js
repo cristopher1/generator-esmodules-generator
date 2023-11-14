@@ -109,8 +109,8 @@ export default class GeneratorEsmodulesGenerator extends Generator {
 
   writing() {
     this.fs.copy(
-      this.templatePath('./generators/app/templates/index.js'),
-      this.destinationPath('generators/app/templates/index.js'),
+      this.templatePath('./generators/app/templates'),
+      this.destinationPath('generators/app/templates'),
     )
     this.fs.copyTpl(
       this.templatePath('./generators/app/index.js'),
