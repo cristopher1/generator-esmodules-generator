@@ -3,13 +3,18 @@
   "version": "0.0.0",
   "description": "",
   "homepage": "",
-  "main": "./dist/cjs/index.cjs",
   "type": "module",
-  "types": "./dist/types/index.d.ts",
+  "main": "./dist/generators/app/index.js",
+  "types": "./dist/types/generators/app/index.d.ts",
   "exports": {
-    "types": "./dist/types/index.d.ts",
-    "import": "./dist/esm/index.mjs",
-    "require": "./dist/cjs/index.cjs"
+    ".": {
+      "types": "./dist/types/generators/app/index.d.ts",
+      "import": "./dist/generators/app/index.js"
+    },
+    "./app": {
+      "types": "./dist/types/generators/app/index.d.ts",
+      "import": "./dist/generators/app/index.js"
+    }
   },
   "keywords": [],
   "files": [
