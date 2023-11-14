@@ -50,9 +50,6 @@
     "yeoman-environment": "^4.0.0",
     "yeoman-test": "^8.2.0"
   },
-  "engines": {
-    "npm": ">= 4.0.0"
-  },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.22.11",
     "chalk": "^2.1.0",
