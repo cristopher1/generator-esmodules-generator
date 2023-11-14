@@ -4,6 +4,7 @@ import yosay from 'yosay'
 
 export default class extends Generator {
   #answers
+
   async prompting() {
     // Have Yeoman greet the user.
     this.log(
