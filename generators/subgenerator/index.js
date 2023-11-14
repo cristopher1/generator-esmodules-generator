@@ -4,14 +4,22 @@ export default class GeneratorSubGenerator extends Generator {
   constructor(args, opts) {
     super(args, opts)
 
-    this.option('create', {
+    this.argument('subGeneratorName', {
       type: String,
-      description: "Creates a subgenerator using a subgenerator's name",
+      description: "Subgenerator's name",
+      required: true,
     })
 
-    this.option('export', {
-      type: String,
+    this.option('create', {
+      type: Boolean,
+      description: 'Creates a subgenerator',
+      default: false,
+    })
+
+    this.option('exports', {
+      type: Boolean,
       description: 'Adds a subgenerator to the field exports into package.json',
+      default: false,
     })
   }
 
@@ -40,13 +48,14 @@ export default class GeneratorSubGenerator extends Generator {
   }
 
   writing() {
-    if (this.options.create) {
-      const subGeneratorName = this.options.create
+    const { create, exports } = this.options
+    const { subGeneratorName } = this.options
+
+    if (create) {
       this.#createSubgenerator(subGeneratorName)
     }
 
-    if (this.options.export) {
-      const subGeneratorName = this.options.export
+    if (exports) {
       this.#exportSubgenerator(subGeneratorName)
     }
   }
