@@ -6,7 +6,12 @@ export default class GeneratorSubGenerator extends Generator {
 
     this.option('create', {
       type: String,
-      description: "subgenerator's name",
+      description: "Creates a subgenerator using a subgenerator's name",
+    })
+
+    this.option('export', {
+      type: String,
+      description: 'Adds a subgenerator to the field exports into package.json',
     })
   }
 
@@ -21,10 +26,28 @@ export default class GeneratorSubGenerator extends Generator {
     )
   }
 
+  #exportSubgenerator(subGeneratorName) {
+    const generatorDirName = 'generators'
+    const distDirName = 'dist'
+    const exportsValue = {}
+
+    exportsValue[`./${subGeneratorName}`] = {
+      types: `./${distDirName}/types/${generatorDirName}/${subGeneratorName}/index.d.ts`,
+      import: `./${distDirName}/${generatorDirName}/${subGeneratorName}/index.js`,
+    }
+
+    this.packageJson.merge({ exports: exportsValue })
+  }
+
   writing() {
     if (this.options.create) {
       const subGeneratorName = this.options.create
       this.#createSubgenerator(subGeneratorName)
+    }
+
+    if (this.options.export) {
+      const subGeneratorName = this.options.export
+      this.#exportSubgenerator(subGeneratorName)
     }
   }
 }
