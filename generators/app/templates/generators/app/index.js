@@ -26,7 +26,10 @@ export default class extends Generator {
   }
 
   writing() {
-    this.fs.copy(this.templatePath('./**/*'), this.destinationPath(''))
+    this.fs.copy(
+      this.templatePath('index.js'),
+      this.destinationPath('src/index.js'),
+    )
   }
 
   end() {
