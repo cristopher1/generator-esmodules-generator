@@ -39,13 +39,18 @@ describe('generator-esmodules-generator:app', () => {
             name: answers.generatorName,
             version: '0.0.0',
             description: answers.generatorDescription,
-            main: './dist/cjs/index.cjs',
             type: 'module',
-            types: './dist/types/index.d.ts',
+            main: './dist/generators/app/index.js',
+            types: './dist/types/generators/app/index.d.ts',
             exports: {
-              types: './dist/types/index.d.ts',
-              import: './dist/esm/index.mjs',
-              require: './dist/cjs/index.cjs',
+              '.': {
+                types: './dist/types/generators/app/index.d.ts',
+                import: './dist/generators/app/index.js',
+              },
+              './app': {
+                types: './dist/types/generators/app/index.d.ts',
+                import: './dist/generators/app/index.js',
+              },
             },
             files: ['dist'],
             author: {
@@ -67,16 +72,12 @@ describe('generator-esmodules-generator:app', () => {
                 'eslint -c .eslintrc.yml --no-eslintrc --ext .js,.mjs generators',
               'lint:build-stage:fix': 'npm run lint:build-stage -- --fix',
               'build:clean': 'rimraf dist',
-              'build:clean-dist-tmp': 'rimraf dist/tmp',
               'build:tsc': 'tsc',
-              'build:es5':
-                "cross-env NODE_ENV=buildCommonJS npx babel --config-file ./babel.config.json generators --out-dir dist/cjs/generators --out-file-extension .cjs --ignore '/**/templates/' --copy-files --include-dotfiles",
               'build:es6':
-                "cross-env NODE_ENV=buildESmodules npx babel --config-file ./babel.config.json generators --out-dir dist/esm/generators --out-file-extension .mjs --ignore '/**/templates/' --copy-files --include-dotfiles",
+                "cross-env NODE_ENV=buildESmodules npx babel generators --config-file ./babel.config.json --out-dir dist/generators --ignore '/**/templates/' --copy-files --include-dotfiles",
               prebuild:
                 'npm run lint:build-stage && npm run format:build-stage:fix && npm run build:clean',
-              build:
-                'npm run build:tsc && npm run build:es5 && npm run build:es6 && npm run build:clean-dist-tmp',
+              build: 'npm run build:tsc && npm run build:es6',
               test: 'node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose',
               commitlint: 'npx commitlint --edit',
               'lint-staged': 'npx lint-staged',
@@ -100,19 +101,6 @@ describe('generator-esmodules-generator:app', () => {
           // Assert
           assert.JSONFileContent('babel.config.json', {
             env: {
-              buildCommonJS: {
-                presets: ['@babel/preset-env'],
-                comments: false,
-                plugins: [
-                  [
-                    '@babel/plugin-transform-runtime',
-                    {
-                      corejs: 3,
-                      version: '^7.22.15',
-                    },
-                  ],
-                ],
-              },
               buildESmodules: {
                 presets: [
                   [

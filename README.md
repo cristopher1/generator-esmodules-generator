@@ -1,7 +1,6 @@
 <h1 align="center">Welcome to generator-esmodules-generator 👋</h1>
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-0.0.6-blue.svg?cacheSeconds=2592000" />
-  <img src="https://img.shields.io/badge/npm-%3E%3D%204.0.0-blue.svg" />
+  <img alt="Version" src="https://img.shields.io/badge/version-0.1.0-blue.svg?cacheSeconds=2592000" />
   <a href="https://github.com/cristopher1/generator-esmodules-generator#readme" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
@@ -37,23 +36,21 @@ The structure created by this generator includes:
 
 Example of a generator created by `generator-esmodules-generator`:
 
-![Captura de pantalla (10)](https://github.com/cristopher1/generator-esmodules-generator/assets/21159930/91f6dc7a-8160-46de-882e-1776490131fc)
+![esmodules-generator](https://github.com/cristopher1/generator-esmodules-generator/assets/21159930/325b033a-7f57-4e4c-979b-68b3a4370314)
 
 ### [Index](#index)
 
-- [Prerequisites](#prerequisites)
 - [Installation](#installation)
+- [Prerequisites](#prerequisites)
+- [Generators included](#generators-included)
 - [The configuration files](#configuration-files)
+- [The question: Do you want to automatically run the scripts that configure the package, then installing the dependencies?](#configuring-the-project-automatically)
 - [The scripts in package.json](#scripts)
 - [Getting To Know Yeoman](#know-yeoman)
 - [Author](#author)
 - [Contributing](#contributing)
 - [Show your support](#support)
 - [License](#license)
-
-## <a id="prerequisites"></a> Prerequisites
-
-- npm >= 4.0.0
 
 ## <a id="installation"></a> Installation
 
@@ -69,6 +66,77 @@ Then generate your new project:
 ```bash
 yo esmodules-generator
 ```
+
+## <a id="prerequisites"></a> Prerequisites
+
+First, you must create a folder, then you enter it using the terminal. Finally you runs.
+
+```bash
+yo esmodules-generator
+```
+
+Example:
+
+```console
+PS C:\Users\...\generator_es6> yo esmodules-generator
+```
+
+## <a id="generators-included"></a> Generators included
+
+The generators included are:
+
+`esmodules-generator:app` used by `yo esmodules-generator`: It is the generator used by default.
+
+`esmodules-generator:subgenerator`: It is used to create and exports subgenerators into the generator created by `yo esmodules-generator`.
+
+When to enter in the folder where you creates your generator using `yo esmodules-generator`, you can use the following commands:
+
+- `yo esmodules-generator:subgenerator subGeneratorName --create`: Creates a subgenerator with name subGeneratorName.
+
+- `yo esmodules-generator:subgenerator subGeneratorName --exports`: Exports subGeneratoName. It adds to exports field (package.json)
+  the properties types (exports the declaration files) and import (exports the subgenerator as ES Modules).
+
+  Example:
+
+  In default package.json created by `esmodules-generator`
+
+  ```json
+  "exports": {
+    ".": {
+      "types": "./dist/types/generators/app/index.d.ts",
+      "import": "./dist/generators/app/index.js"
+    },
+    "./app": {
+      "types": "./dist/types/generators/app/index.d.ts",
+      "import": "./dist/generators/app/index.js"
+    }
+  }
+  ```
+
+  The `--create` and `--exports` options can be combined.
+
+  ```console
+  PS C:\Users\...\generator_es6> yo esmodules-generator:subgenerator subapp --create --exports
+  ```
+
+  package.json
+
+  ```json
+  "exports": {
+    ".": {
+      "types": "./dist/types/generators/app/index.d.ts",
+      "import": "./dist/generators/app/index.js"
+    },
+    "./app": {
+      "types": "./dist/types/generators/app/index.d.ts",
+      "import": "./dist/generators/app/index.js"
+    },
+    "./subapp": {
+      "types": "./dist/types/generators/subapp/index.d.ts",
+      "import": "./dist/generators/subapp/index.js"
+    }
+  },
+  ```
 
 ## <a id="configuration-files"></a> The configuration files
 
@@ -90,12 +158,23 @@ The configuration files included are:
 
 - TypeScript: `tsconfig.json` (configuration used by TypeScript compiler).
 
+## <a id="configuring-the-project-automatically"></a> The question: Do you want to automatically run the scripts that configure the package, then installing the dependencies?
+
+When you selects the true value, the following scripts ubicated in the package.json are executed:
+
+- `init`
+- `documentation:create`
+- `test`
+- `build`
+
+If you selects the false value, you must run `npm run init` obligatory.
+
 ## <a id="scripts"></a> The scripts in package.json
 
 The more important scripts added into the package.json created by this generator are:
 
-- `"init"`: Runs the commands necessary to initialize the package, for example `init:husky`. It executed automatically when `Do you want to automatically run the scripts that configure the package, then installing the dependencies?` is yes.
-- `"documentation:create"`: Creates documentation using readme-md-generator. It executed automatically when `Do you want to automatically run the scripts that configure the package, then installing the dependencies?` is yes.
+- `"init"`: Runs the commands necessary to initialize the package, for example `init:husky`.
+- `"documentation:create"`: Creates documentation using readme-md-generator.
 - `"format"`: Checks the format using prettier.
 - `"format:fix"`: Fixes the format using prettier.
 - `"format:build-stage"` and `"format:build-stage:fix"`: similar to `"format"` and `"format:fix"`. They used when the `npm run build` is called.
@@ -103,9 +182,8 @@ The more important scripts added into the package.json created by this generator
 - `"lint:fix"`: Fixes the code using eslint.
 - `"lint:build-stage"` and `"lint:build-stage:fix"`: similar to `"lint"` and `"lint:fix"`. They are used when the `npm run build` is called.
 - `"build:tsc"`: Generates .d.ts files using the TypeScript compilator. It is used when the `npm run build` is called.
-- `"build:es5"`: Transpiles the source code to es5 using babel.
 - `"build:es6"`: Transpiles the source code to es6 using babel.
-- `"build"`: Generates the dist folder, that contains the cjs folder (source code transpiled to es5), the esm folder (source code transpiled to es6), and types folder (it contains the declaration files).
+- `"build"`: Generates the dist folder that contains the generators folder (it contains the source code transpiled to es6) and types folder (it contains the declaration files).
 - `"prepublishOnly"`: Used before publishing your package using `npm publish`. Runs `npm run build`.
 - `"test"`: Runs the tests using jest.
 - `"commitlint"`: Runs commitlint. It is used into .husky/commit-msg file. It is called by the commit-msg hook. See [git hook](https://www.atlassian.com/git/tutorials/git-hooks#:~:text=The%20commit%2Dmsg%20hook%20is,file%20that%20contains%20the%20message.).
