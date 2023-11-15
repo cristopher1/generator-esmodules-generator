@@ -89,67 +89,63 @@ The generators included are:
 
 `esmodules-generator:subgenerator`: It is used to create and exports subgenerators into the generator created by `yo esmodules-generator`.
 
- When to enter in the folder where you creates your generator using `yo esmodules-generator`, you can use the following commands:
+When to enter in the folder where you creates your generator using `yo esmodules-generator`, you can use the following commands:
 
-  - `yo esmodules-generator:subgenerator subGeneratorName --create`: Creates a subgenerator with name subGeneratorName.
-  
-  - `yo esmodules-generator:subgenerator subGeneratorName --exports`: Exports subGeneratoName. It adds to exports field (package.json)
-    the properties types (exports the declaration files) and import (exports the subgenerator as ES Modules).
+- `yo esmodules-generator:subgenerator subGeneratorName --create`: Creates a subgenerator with name subGeneratorName.
 
-    Example:
+- `yo esmodules-generator:subgenerator subGeneratorName --exports`: Exports subGeneratoName. It adds to exports field (package.json)
+  the properties types (exports the declaration files) and import (exports the subgenerator as ES Modules).
 
-    In default package.json created by `esmodules-generator`
+  Example:
 
-    ```json
-    "exports": {
-      ".": {
-        "types": "./dist/types/generators/app/index.d.ts",
-        "import": "./dist/generators/app/index.js"
-      },
-      "./app": {
-        "types": "./dist/types/generators/app/index.d.ts",
-        "import": "./dist/generators/app/index.js"
-      }
-    }
-    ```
+  In default package.json created by `esmodules-generator`
 
-    The `--create` and `--exports` options can be combined.
-    
-    ```console
-    PS C:\Users\...\generator_es6> yo esmodules-generator:subgenerator subapp --create --exports
-    ```
-
-    package.json
-
-    ```json
-    "exports": {
-      ".": {
-        "types": "./dist/types/generators/app/index.d.ts",
-        "import": "./dist/generators/app/index.js"
-      },
-      "./app": {
-        "types": "./dist/types/generators/app/index.d.ts",
-        "import": "./dist/generators/app/index.js"
-      },
-      "./subapp": {
-        "types": "./dist/types/generators/subapp/index.d.ts",
-        "import": "./dist/generators/subapp/index.js"
-      }
+  ```json
+  "exports": {
+    ".": {
+      "types": "./dist/types/generators/app/index.d.ts",
+      "import": "./dist/generators/app/index.js"
     },
-    ```
+    "./app": {
+      "types": "./dist/types/generators/app/index.d.ts",
+      "import": "./dist/generators/app/index.js"
+    }
+  }
+  ```
+
+  The `--create` and `--exports` options can be combined.
+
+  ```console
+  PS C:\Users\...\generator_es6> yo esmodules-generator:subgenerator subapp --create --exports
+  ```
+
+  package.json
+
+  ```json
+  "exports": {
+    ".": {
+      "types": "./dist/types/generators/app/index.d.ts",
+      "import": "./dist/generators/app/index.js"
+    },
+    "./app": {
+      "types": "./dist/types/generators/app/index.d.ts",
+      "import": "./dist/generators/app/index.js"
+    },
+    "./subapp": {
+      "types": "./dist/types/generators/subapp/index.d.ts",
+      "import": "./dist/generators/subapp/index.js"
+    }
+  },
+  ```
 
 ## <a id="configuration-files"></a> The configuration files
 
 The configuration files included are:
 
 - Eslint: `.eslintignore` (the files and directories ignored by eslint) and `.eslintrc.json` (configuration used by eslint).
-  
 - Git: `.gitignore` (the files and directories ignored by git).
-  
 - Lint-staged: `.lintstagedrc.json` (configuration used by lint-staged).
-  
 - Prettier: `.prettierignore` (the files and directories ignored by prettier) and `.prettierrc.json` (configuration used by prettier).
-  
 - Babel: `babel.config.json` (configuration used by babel):
 
   - The `env.buildCommonjs` contains the configuration used to transpile the source code to es5.
@@ -171,7 +167,7 @@ When you selects the true value, the following scripts ubicated in the package.j
 - `test`
 - `build`
 
-If you selects the false value, you must run ```npm run init``` obligatory.
+If you selects the false value, you must run `npm run init` obligatory.
 
 ## <a id="scripts"></a> The scripts in package.json
 
