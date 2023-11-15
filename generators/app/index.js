@@ -7,7 +7,6 @@ import { PromptBuilder } from './generator_components/PromptBuilder.js'
 export default class GeneratorEsmodulesGenerator extends Generator {
   #promptBuilder
   #generatorProvider
-  #answers
 
   initializing() {
     this.#promptBuilder = new PromptBuilder()
@@ -29,7 +28,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
     promptBuilder.setOptions({ appname: this.appname })
     const prompts = promptBuilder.build()
 
-    this.#answers = await this.prompt(prompts)
+    this.answers = await this.prompt(prompts)
   }
 
   #addGit() {
@@ -83,7 +82,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
   }
 
   configuring() {
-    const { includeLicense } = this.#answers
+    const { includeLicense } = this.answers
 
     this.#addGit()
     this.#addEslint()
@@ -93,56 +92,18 @@ export default class GeneratorEsmodulesGenerator extends Generator {
     this.#addTypeScript()
 
     this.#addBabel()
-    this.#addJest([this.#answers.generatorName])
+    this.#addJest([this.answers.generatorName])
     this.#addCommitLint()
 
     if (includeLicense) {
       const licenseOptions = {
-        name: this.#answers.authorName,
-        email: this.#answers.authorEmail,
-        website: this.#answers.authorHomepage,
+        name: this.answers.authorName,
+        email: this.answers.authorEmail,
+        website: this.answers.authorHomepage,
       }
 
       this.#addLicense(licenseOptions)
     }
-  }
-
-  writing() {
-    this.fs.copy(
-      this.templatePath('./generators/app/templates'),
-      this.destinationPath('generators/app/templates'),
-    )
-    this.fs.copyTpl(
-      this.templatePath('./generators/app/index.js'),
-      this.destinationPath('generators/app/index.js'),
-      {
-        generatorName: this.#answers.generatorName,
-      },
-    )
-    this.fs.copy(
-      this.templatePath('./package.json'),
-      this.destinationPath('./package.json'),
-    )
-    this.packageJson.merge({
-      name: this.#answers.generatorName,
-      description: this.#answers.generatorDescription,
-      type: this.#answers.packageType,
-      author: {
-        name: this.#answers.authorName,
-        email: this.#answers.authorEmail,
-        url: this.#answers.authorHomepage,
-      },
-      repository: {
-        url: this.#answers.urlRepository,
-      },
-      bugs: {
-        url: this.#answers.urlRepository
-          ? `${this.#answers.urlRepository}/issues`
-          : '',
-      },
-      keywords: this.#getKeywords(this.#answers.generatorKeywords),
-      homepage: this.#answers.generatorWebsite,
-    })
   }
 
   #getKeywords(packageKeywords) {
@@ -155,6 +116,44 @@ export default class GeneratorEsmodulesGenerator extends Generator {
       return []
     }
     return keywordsWithoutSpaces
+  }
+
+  writing() {
+    this.fs.copyTpl(
+      this.templatePath('generators/app/index.js'),
+      this.destinationPath('generators/app/index.js'),
+      {
+        generatorName: this.answers.generatorName,
+      },
+    )
+    this.fs.copy(
+      this.templatePath('generators/app/templates/index.js'),
+      this.destinationPath('generators/app/templates/index.js'),
+    )
+    this.fs.copy(
+      this.templatePath('package.json'),
+      this.destinationPath('package.json'),
+    )
+    this.packageJson.merge({
+      name: this.answers.generatorName,
+      description: this.answers.generatorDescription,
+      type: this.answers.packageType,
+      author: {
+        name: this.answers.authorName,
+        email: this.answers.authorEmail,
+        url: this.answers.authorHomepage,
+      },
+      repository: {
+        url: this.answers.urlRepository,
+      },
+      bugs: {
+        url: this.answers.urlRepository
+          ? `${this.answers.urlRepository}/issues`
+          : '',
+      },
+      keywords: this.#getKeywords(this.answers.generatorKeywords),
+      homepage: this.answers.generatorWebsite,
+    })
   }
 
   #runGitInit() {
@@ -209,7 +208,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
 
   end() {
     const dependencyManagers = ['yarn', 'npm']
-    const { runGitInit, runPackageScripts } = this.#answers
+    const { runGitInit, runPackageScripts } = this.answers
 
     if (runGitInit) {
       this.#runGitInit()

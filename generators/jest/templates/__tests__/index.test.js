@@ -21,14 +21,14 @@ describe('<%- generatorName %>:app', () => {
 
     it('Should create a index.js file', () => {
       // Assert
-      assert.file('index.js')
+      assert.file('src/index.js')
     })
 
     it('Should add the correct content into index.js file', () => {
       // Assert
       assert.fileContent([
-        ['index.js', 'const getGreeting = (string) => `hello ${string}`'],
-        ['index.js', 'export { getGreeting }'],
+        ['src/index.js', 'const getGreeting = (string) => `hello ${string}`'],
+        ['src/index.js', 'export { getGreeting }'],
       ])
     })
   })
