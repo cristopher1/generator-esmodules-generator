@@ -25,11 +25,11 @@ export default class GeneratorSubGenerator extends Generator {
 
   #createSubgenerator(subGeneratorName) {
     this.fs.copy(
-      this.templatePath('./templates/.gitkeep'),
+      this.templatePath('templates/.gitkeep'),
       this.destinationPath(`generators/${subGeneratorName}/templates/.gitkeep`),
     )
     this.fs.copy(
-      this.templatePath('./index.js'),
+      this.templatePath('index.js'),
       this.destinationPath(`generators/${subGeneratorName}/index.js`),
     )
   }
