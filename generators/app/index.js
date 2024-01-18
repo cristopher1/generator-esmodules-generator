@@ -106,16 +106,36 @@ export default class GeneratorEsmodulesGenerator extends Generator {
     }
   }
 
-  #getKeywords(packageKeywords) {
-    const keywords = packageKeywords.split(',')
-    const keywordsWithoutSpaces = keywords.map((elemenet) => {
+  #removeEmptyKeyword(keywords) {
+    return keywords.filter((element) => {
+      return element !== ''
+    })
+  }
+
+  #removeSpacesFromKeywords(keywords) {
+    return keywords.map((elemenet) => {
       return elemenet.trim()
     })
+  }
 
-    if (keywordsWithoutSpaces.length === 1 && keywordsWithoutSpaces[0] === '') {
-      return []
-    }
-    return keywordsWithoutSpaces
+  #removeRepeatedKeywords(keywords) {
+    const uniqueKeywords = new Set(keywords)
+    return [...uniqueKeywords]
+  }
+
+  /**
+   * @param {string} generatorKeywords Keywords entered by the user
+   * @returns {Array[string]} Keywords used into package.json
+   */
+  #getKeywords(generatorKeywords) {
+    const baseKeywords = ['yeoman-generator']
+    const keywords = generatorKeywords.split(',')
+    let packageKeywords = baseKeywords.concat(keywords)
+    packageKeywords = this.#removeSpacesFromKeywords(packageKeywords)
+    packageKeywords = this.#removeEmptyKeyword(packageKeywords)
+    packageKeywords = this.#removeRepeatedKeywords(packageKeywords)
+
+    return packageKeywords
   }
 
   writing() {
