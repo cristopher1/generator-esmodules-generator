@@ -106,16 +106,54 @@ export default class GeneratorEsmodulesGenerator extends Generator {
     }
   }
 
-  #getKeywords(packageKeywords) {
-    const keywords = packageKeywords.split(',')
-    const keywordsWithoutSpaces = keywords.map((elemenet) => {
+  #removeEmptyKeyword(keywords) {
+    return keywords.filter((element) => {
+      return element !== ''
+    })
+  }
+
+  #removeSpacesFromKeywords(keywords) {
+    return keywords.map((elemenet) => {
       return elemenet.trim()
     })
+  }
 
-    if (keywordsWithoutSpaces.length === 1 && keywordsWithoutSpaces[0] === '') {
-      return []
+  #removeRepeatedKeywords(keywords) {
+    const uniqueKeywords = new Set(keywords)
+    return [...uniqueKeywords]
+  }
+
+  /**
+   * @param {string} generatorKeywords Keywords entered by the user
+   * @returns {Array[string]} Keywords used into package.json
+   */
+  #formatKeywords(generatorKeywords) {
+    const baseKeywords = ['yeoman-generator']
+    const keywords = generatorKeywords.split(',')
+    let packageKeywords = baseKeywords.concat(keywords)
+    packageKeywords = this.#removeSpacesFromKeywords(packageKeywords)
+    packageKeywords = this.#removeEmptyKeyword(packageKeywords)
+    packageKeywords = this.#removeRepeatedKeywords(packageKeywords)
+
+    return packageKeywords
+  }
+
+  /**
+   * @param {string} generatorName The generator name entered by the user
+   * @returns {string} The formated generator name
+   */
+  #formatGeneratorName(generatorName) {
+    const prefix = 'generator'
+    const start = 0
+    const components = generatorName.split('-')
+    let formatedGeneratorName = generatorName
+
+    if (components.indexOf(prefix) !== start) {
+      components.unshift(prefix)
+      formatedGeneratorName = components.join('-')
     }
-    return keywordsWithoutSpaces
+
+    return formatedGeneratorName
   }
 
   writing() {
@@ -135,7 +173,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
       this.destinationPath('package.json'),
     )
     this.packageJson.merge({
-      name: this.answers.generatorName,
+      name: this.#formatGeneratorName(this.answers.generatorName),
       description: this.answers.generatorDescription,
       type: this.answers.packageType,
       author: {
@@ -151,7 +189,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
           ? `${this.answers.urlRepository}/issues`
           : '',
       },
-      keywords: this.#getKeywords(this.answers.generatorKeywords),
+      keywords: this.#formatKeywords(this.answers.generatorKeywords),
       homepage: this.answers.generatorWebsite,
     })
   }

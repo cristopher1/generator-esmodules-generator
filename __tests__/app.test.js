@@ -36,8 +36,8 @@ describe('generator-esmodules-generator:app', () => {
         it('Should create a package.json adding the required fields', () => {
           // Assert
           assert.JSONFileContent('package.json', {
-            name: answers.generatorName,
-            version: '0.0.0',
+            name: `generator-${answers.generatorName}`,
+            version: '0.1.0',
             description: answers.generatorDescription,
             type: 'module',
             main: './dist/generators/app/index.js',
@@ -87,7 +87,7 @@ describe('generator-esmodules-generator:app', () => {
             repository: {
               url: answers.urlRepository,
             },
-            keywords: [],
+            keywords: ['yeoman-generator'],
             bugs: {
               url: `${answers.urlRepository}/issues`,
             },

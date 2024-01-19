@@ -1,6 +1,6 @@
 <h1 align="center">Welcome to generator-esmodules-generator 👋</h1>
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-0.1.1-blue.svg?cacheSeconds=2592000" />
+  <img alt="Version" src="https://img.shields.io/badge/version-0.2.0-blue.svg?cacheSeconds=2592000" />
   <a href="https://github.com/cristopher1/generator-esmodules-generator#readme" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
@@ -17,6 +17,12 @@
 ### 🏠 [Homepage](https://github.com/cristopher1/generator-esmodules-generator)
 
 The `generator-esmodules-generator` provides a structure to create a yeoman generator using ES Modules.
+
+**Features added in version 0.2.0:**
+
+- The generator name is verified. The prefix generator- is added automatically to the generator name.
+- The keyword 'yeoman-generator' is added automatically in package.json.
+- The generator created by generator-esmodules-generator contains the version 0.1.0 in package.json.
 
 The structure created by this generator includes:
 
