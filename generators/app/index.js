@@ -127,7 +127,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
    * @param {string} generatorKeywords Keywords entered by the user
    * @returns {Array[string]} Keywords used into package.json
    */
-  #getKeywords(generatorKeywords) {
+  #formatKeywords(generatorKeywords) {
     const baseKeywords = ['yeoman-generator']
     const keywords = generatorKeywords.split(',')
     let packageKeywords = baseKeywords.concat(keywords)
@@ -136,6 +136,24 @@ export default class GeneratorEsmodulesGenerator extends Generator {
     packageKeywords = this.#removeRepeatedKeywords(packageKeywords)
 
     return packageKeywords
+  }
+
+  /**
+   * @param {string} generatorName The generator name entered by the user
+   * @returns {string} The formated generator name
+   */
+  #formatGeneratorName(generatorName) {
+    const prefix = 'generator'
+    const start = 0
+    const components = generatorName.split('-')
+    let formatedGeneratorName = generatorName
+
+    if (components.indexOf(prefix) !== start) {
+      components.unshift(prefix)
+      formatedGeneratorName = components.join('-')
+    }
+
+    return formatedGeneratorName
   }
 
   writing() {
@@ -155,7 +173,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
       this.destinationPath('package.json'),
     )
     this.packageJson.merge({
-      name: this.answers.generatorName,
+      name: this.#formatGeneratorName(this.answers.generatorName),
       description: this.answers.generatorDescription,
       type: this.answers.packageType,
       author: {
@@ -171,7 +189,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
           ? `${this.answers.urlRepository}/issues`
           : '',
       },
-      keywords: this.#getKeywords(this.answers.generatorKeywords),
+      keywords: this.#formatKeywords(this.answers.generatorKeywords),
       homepage: this.answers.generatorWebsite,
     })
   }
