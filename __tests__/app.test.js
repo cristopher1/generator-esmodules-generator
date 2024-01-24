@@ -13,7 +13,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 describe('generator-esmodules-generator:app', () => {
   describe('create a yeoman generator', () => {
-    describe('scaffold a full package using ES Modules', () => {
+    describe('scaffold a full yeoman generator using ES Modules', () => {
       const answers = {}
 
       beforeAll(async () => {
@@ -97,7 +97,7 @@ describe('generator-esmodules-generator:app', () => {
       })
 
       describe('babel', () => {
-        it('Should generate the babel.config.json file that contains the configuration for commonjs', () => {
+        it('Should generate the babel.config.json file that contains the configuration for ES modules', () => {
           // Assert
           assert.JSONFileContent('babel.config.json', {
             env: {
