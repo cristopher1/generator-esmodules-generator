@@ -11,42 +11,60 @@ on:
       - development
 
 jobs:
-  lint:
+  build:
+    name: Test source code
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: npm
-          cache-dependency-path: package-lock.json
+          node-version: 20.x
+
       - name: install dependencies
-        run: npm install
+        run: npm ci
+
       - name: run linter
         run: npm run lint
-  format:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: npm
-          cache-dependency-path: package-lock.json
-      - name: install dependencies
-        run: npm install
+
       - name: run formatter
         run: npm run format
-  tests:
+
+      - name: run tests
+        run: npm run test
+
+  create_generator:
+    needs: build
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [14.x, 16.x, 18.x, 20.x]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: npm
-          cache-dependency-path: package-lock.json
+          node-version: ${{ matrix.version }}
+
+      - name: install yeoman
+        run: npm install -g yo
+
       - name: install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: link the generator
+        run: npm link
+
+      - name: create a new generator
+        working-directory: ../test-generator
+        run: yo esmodules-generator
+
+      - name: run linter
+        working-directory: ../test-generator
+        run: npm run lint
+
+      - name: run formatter
+        working-directory: ../test-generator
+        run: npm run format
+
       - name: run tests
+        working-directory: ../test-generator
         run: npm run test
