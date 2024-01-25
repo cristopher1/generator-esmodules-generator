@@ -53,6 +53,10 @@ jobs:
       - name: link the generator
         run: npm link
 
+      - name: create a new folder
+        working-directory: ../
+        run: mkdir -p test-generator
+
       - name: create a new generator
         working-directory: ../test-generator
         run: yo esmodules-generator
