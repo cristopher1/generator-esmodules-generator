@@ -74,14 +74,14 @@ jobs:
 
       - name: create a new folder
         working-directory: ../
-        run: mkdir -p test-generator
+        run: mkdir -p generator_test
 
       - name: create a new generator
-        working-directory: ../test-generator
+        working-directory: ../generator_test
         run: yo esmodules-generator
 
       - name: run linter, formatter and tests
-        working-directory: ../test-generator
+        working-directory: ../generator_test
         run: |
           npm run lint
           npm run format
