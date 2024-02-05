@@ -127,13 +127,14 @@ export default class GeneratorEsmodulesGenerator extends Generator {
   }
 
   /**
-   * @param {string} generatorKeywords Keywords entered by the user
-   * @returns {Array[string]} Keywords used into package.json
+   * @param {string} generatorKeywords Keywords entered by the user.
+   * @returns {Array[string]} Keywords used into package.json.
    */
   #formatKeywords(generatorKeywords) {
     const baseKeywords = ['yeoman-generator']
     const keywords = generatorKeywords.split(',')
     let packageKeywords = baseKeywords.concat(keywords)
+
     packageKeywords = this.#removeSpacesFromKeywords(packageKeywords)
     packageKeywords = this.#removeEmptyKeyword(packageKeywords)
     packageKeywords = this.#removeRepeatedKeywords(packageKeywords)
@@ -142,19 +143,35 @@ export default class GeneratorEsmodulesGenerator extends Generator {
   }
 
   /**
-   * @param {string} generatorName The generator name entered by the user
-   * @returns {string} The formated generator name
+   * If the generator name does not contain the required prefix, this prefix is
+   * added.
+   *
+   * @param {Array[string]} generatorNameComponents Array that contains the
+   *   components of the generator name.
+   * @returns {Array[string]} The components of the generator name with the
+   *   required prefix.
    */
-  #formatGeneratorName(generatorName) {
+  #addGeneratorPrefix(generatorNameComponents) {
     const prefix = 'generator'
     const start = 0
-    const components = generatorName.split('-')
-    let formatedGeneratorName = generatorName
 
-    if (components.indexOf(prefix) !== start) {
-      components.unshift(prefix)
-      formatedGeneratorName = components.join('-')
+    if (generatorNameComponents.indexOf(prefix) !== start) {
+      generatorNameComponents.unshift(prefix)
     }
+
+    return generatorNameComponents
+  }
+
+  /**
+   * @param {string} generatorName The generator name entered by the user.
+   * @returns {string} The formated generator name.
+   */
+  #formatGeneratorName(generatorName) {
+    let generatorNameComponents = generatorName.split('-')
+
+    generatorNameComponents = this.#addGeneratorPrefix(generatorNameComponents)
+
+    const formatedGeneratorName = generatorNameComponents.join('-')
 
     return formatedGeneratorName
   }
