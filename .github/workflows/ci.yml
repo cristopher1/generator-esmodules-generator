@@ -33,7 +33,7 @@ jobs:
         run: npm run build
 
       - name: save artifact
-        uses: actions/upload-actifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: dist-generator-esmodules-generator
           path: |
@@ -52,7 +52,7 @@ jobs:
         node-version: ['>=18.17.0', '20.x']
     steps:
       - name: download dist generator-esmodules-generator generator
-        uses: actions/download-actifact@v4
+        uses: actions/download-artifact@v4
         with:
           name: dist-generator-esmodules-generator
 
