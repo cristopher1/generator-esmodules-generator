@@ -29,6 +29,9 @@ export default class GeneratorEsmodulesGenerator extends Generator {
     const prompts = promptBuilder.build()
 
     this.answers = await this.prompt(prompts)
+    this.answers.generatorName = this.#formatGeneratorName(
+      this.answers.generatorName,
+    )
   }
 
   #addGit() {
@@ -173,7 +176,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
       this.destinationPath('package.json'),
     )
     this.packageJson.merge({
-      name: this.#formatGeneratorName(this.answers.generatorName),
+      name: this.answers.generatorName,
       description: this.answers.generatorDescription,
       type: this.answers.packageType,
       author: {
