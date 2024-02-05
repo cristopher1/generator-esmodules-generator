@@ -80,14 +80,9 @@ jobs:
         working-directory: ../test-generator
         run: yo esmodules-generator
 
-      - name: run linter
+      - name: run linter, formatter and tests
         working-directory: ../test-generator
-        run: npm run lint
-
-      - name: run formatter
-        working-directory: ../test-generator
-        run: npm run format
-
-      - name: run tests
-        working-directory: ../test-generator
-        run: npm run test
+        run: |
+          npm run lint
+          npm run format
+          npm run test
