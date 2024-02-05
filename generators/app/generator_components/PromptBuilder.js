@@ -10,8 +10,7 @@ export class PromptBuilder {
       {
         type: 'input',
         name: 'generatorName',
-        message:
-          "Project's name (if the name does not include the prefix generator- this will be added automatically)",
+        message: "Project's name",
         default: this.#options.appname,
       },
       {
