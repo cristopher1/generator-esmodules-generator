@@ -230,7 +230,7 @@ describe('generator-esmodules-generator:app', () => {
             ['__tests__/index.test.js', "import helpers from 'yeoman-test'"],
             [
               '__tests__/index.test.js',
-              `describe('${generatorName}:app', () => {`,
+              `describe('generator-${generatorName}:app', () => {`,
             ],
             ['__tests__/index.test.js', "describe('create a project', () => {"],
             [
