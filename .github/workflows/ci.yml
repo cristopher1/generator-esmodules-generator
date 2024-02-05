@@ -11,8 +11,8 @@ on:
       - development
 
 jobs:
-  build:
-    name: Test source code
+  test_and_build:
+    name: Test the source code and build the generator-esmodules-generator generator
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,23 +23,39 @@ jobs:
       - name: install dependencies
         run: npm ci
 
-      - name: run linter
-        run: npm run lint
+      - name: run linter, formatter and unit tests
+        run: |
+          npm run lint
+          npm run format
+          npm run test
 
-      - name: run formatter
-        run: npm run format
+      - name: build the dist folder
+        run: npm run build
 
-      - name: run tests
-        run: npm run test
+      - name: save artifact
+        uses: actions/upload-actifact@v4
+        with:
+          name: dist-generator-esmodules-generator
+          path: |
+            dist
+            LICENSE
+            README.md
+            package.json
+          retention-days: 1
 
   create_generator:
-    needs: build
+    name: Test a generator created by generator-esmodules-generator generator
+    needs: test_and_build
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: ['>=18.17.0', '20.x']
     steps:
-      - uses: actions/checkout@v4
+      - name: download dist generator-esmodules-generator generator
+        uses: actions/download-actifact@v4
+        with:
+          name: dist-generator-esmodules-generator
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
