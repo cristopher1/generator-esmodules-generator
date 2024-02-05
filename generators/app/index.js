@@ -13,6 +13,88 @@ export default class GeneratorEsmodulesGenerator extends Generator {
     this.#generatorProvider = new GeneratorProvider()
   }
 
+  #removeEmptyKeyword(keywords) {
+    return keywords.filter((element) => {
+      return element !== ''
+    })
+  }
+
+  #removeSpacesFromKeywords(keywords) {
+    return keywords.map((elemenet) => {
+      return elemenet.trim()
+    })
+  }
+
+  #removeRepeatedKeywords(keywords) {
+    const uniqueKeywords = new Set(keywords)
+    return [...uniqueKeywords]
+  }
+
+  /**
+   * @param {string} generatorKeywords Keywords entered by the user.
+   * @returns {Array[string]} Keywords used into package.json.
+   */
+  #formatKeywords(generatorKeywords) {
+    const baseKeywords = ['yeoman-generator']
+    const keywords = generatorKeywords.split(',')
+    let packageKeywords = baseKeywords.concat(keywords)
+
+    packageKeywords = this.#removeSpacesFromKeywords(packageKeywords)
+    packageKeywords = this.#removeEmptyKeyword(packageKeywords)
+    packageKeywords = this.#removeRepeatedKeywords(packageKeywords)
+
+    return packageKeywords
+  }
+
+  /**
+   * @param {string} generatorName The name of the generator.
+   * @param {string} [replacer] The String used to replace the whitespaces.
+   * @returns The name of the generator with replaced whitespaces.
+   */
+  #replaceWhiteSpaces(generatorName, replacer = '-') {
+    const generatorNameWithoutWhiteSpaces = generatorName.split(' ')
+    const generatorNameWithReplacedWhiteSpaces =
+      generatorNameWithoutWhiteSpaces.join(replacer)
+
+    return generatorNameWithReplacedWhiteSpaces
+  }
+
+  /**
+   * If the generator name does not contain the required prefix, this prefix is
+   * added.
+   *
+   * @param {Array[string]} generatorNameComponents Array that contains the
+   *   components of the generator name.
+   * @returns {Array[string]} The components of the generator name with the
+   *   required prefix.
+   */
+  #addGeneratorPrefix(generatorNameComponents) {
+    const prefix = 'generator'
+    const start = 0
+
+    if (generatorNameComponents.indexOf(prefix) !== start) {
+      generatorNameComponents.unshift(prefix)
+    }
+
+    return generatorNameComponents
+  }
+
+  /**
+   * @param {string} generatorName The generator name entered by the user.
+   * @returns {string} The formated generator name.
+   */
+  #formatGeneratorName(generatorName) {
+    generatorName = this.#replaceWhiteSpaces(generatorName)
+
+    let generatorNameComponents = generatorName.split('-')
+
+    generatorNameComponents = this.#addGeneratorPrefix(generatorNameComponents)
+
+    const formatedGeneratorName = generatorNameComponents.join('-')
+
+    return formatedGeneratorName
+  }
+
   async prompting() {
     const promptBuilder = this.#promptBuilder
 
@@ -31,6 +113,9 @@ export default class GeneratorEsmodulesGenerator extends Generator {
     this.answers = await this.prompt(prompts)
     this.answers.generatorName = this.#formatGeneratorName(
       this.answers.generatorName,
+    )
+    this.answers.generatorKeywords = this.#formatKeywords(
+      this.answers.generatorKeywords,
     )
   }
 
@@ -109,73 +194,6 @@ export default class GeneratorEsmodulesGenerator extends Generator {
     }
   }
 
-  #removeEmptyKeyword(keywords) {
-    return keywords.filter((element) => {
-      return element !== ''
-    })
-  }
-
-  #removeSpacesFromKeywords(keywords) {
-    return keywords.map((elemenet) => {
-      return elemenet.trim()
-    })
-  }
-
-  #removeRepeatedKeywords(keywords) {
-    const uniqueKeywords = new Set(keywords)
-    return [...uniqueKeywords]
-  }
-
-  /**
-   * @param {string} generatorKeywords Keywords entered by the user.
-   * @returns {Array[string]} Keywords used into package.json.
-   */
-  #formatKeywords(generatorKeywords) {
-    const baseKeywords = ['yeoman-generator']
-    const keywords = generatorKeywords.split(',')
-    let packageKeywords = baseKeywords.concat(keywords)
-
-    packageKeywords = this.#removeSpacesFromKeywords(packageKeywords)
-    packageKeywords = this.#removeEmptyKeyword(packageKeywords)
-    packageKeywords = this.#removeRepeatedKeywords(packageKeywords)
-
-    return packageKeywords
-  }
-
-  /**
-   * If the generator name does not contain the required prefix, this prefix is
-   * added.
-   *
-   * @param {Array[string]} generatorNameComponents Array that contains the
-   *   components of the generator name.
-   * @returns {Array[string]} The components of the generator name with the
-   *   required prefix.
-   */
-  #addGeneratorPrefix(generatorNameComponents) {
-    const prefix = 'generator'
-    const start = 0
-
-    if (generatorNameComponents.indexOf(prefix) !== start) {
-      generatorNameComponents.unshift(prefix)
-    }
-
-    return generatorNameComponents
-  }
-
-  /**
-   * @param {string} generatorName The generator name entered by the user.
-   * @returns {string} The formated generator name.
-   */
-  #formatGeneratorName(generatorName) {
-    let generatorNameComponents = generatorName.split('-')
-
-    generatorNameComponents = this.#addGeneratorPrefix(generatorNameComponents)
-
-    const formatedGeneratorName = generatorNameComponents.join('-')
-
-    return formatedGeneratorName
-  }
-
   writing() {
     this.fs.copyTpl(
       this.templatePath('generators/app/index.js'),
@@ -209,7 +227,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
           ? `${this.answers.urlRepository}/issues`
           : '',
       },
-      keywords: this.#formatKeywords(this.answers.generatorKeywords),
+      keywords: this.answers.generatorKeywords,
       homepage: this.answers.generatorWebsite,
     })
   }
