@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: 20.x
 
-      - name: install dependencies
+      - name: install dependencies using package-lock.json
         run: npm ci
 
       - name: run linter, formatter and unit tests
@@ -66,8 +66,8 @@ jobs:
       - name: install yeoman
         run: npm install -g yo
 
-      - name: install dependencies
-        run: npm ci
+      - name: install dependencies, it does not use the package-lock.json file
+        run: npm install
 
       - name: link the generator
         run: npm link
