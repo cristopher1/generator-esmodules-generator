@@ -3,96 +3,19 @@ import chalk from 'chalk'
 import yosay from 'yosay'
 import { GeneratorProvider } from './generator_components/GeneratorProvider.js'
 import { PromptBuilder } from './generator_components/PromptBuilder.js'
+import { GeneratorNameFormatter } from './generator_components/formatter/generatorNameFormatter.js'
+import { KeywordFormatter } from './generator_components/formatter/keywordFormatter.js'
 
 export default class GeneratorEsmodulesGenerator extends Generator {
   #promptBuilder
   #generatorProvider
 
   initializing() {
-    this.#promptBuilder = new PromptBuilder()
+    this.#promptBuilder = new PromptBuilder(
+      new GeneratorNameFormatter(),
+      new KeywordFormatter(),
+    )
     this.#generatorProvider = new GeneratorProvider()
-  }
-
-  #removeEmptyKeyword(keywords) {
-    return keywords.filter((element) => {
-      return element !== ''
-    })
-  }
-
-  #removeSpacesFromKeywords(keywords) {
-    return keywords.map((elemenet) => {
-      return elemenet.trim()
-    })
-  }
-
-  #removeRepeatedKeywords(keywords) {
-    const uniqueKeywords = new Set(keywords)
-    return [...uniqueKeywords]
-  }
-
-  /**
-   * @param {string} generatorKeywords Keywords entered by the user.
-   * @returns {Array[string]} Keywords used into package.json.
-   */
-  #formatKeywords(generatorKeywords) {
-    const baseKeywords = ['yeoman-generator']
-    const keywords = generatorKeywords.split(',')
-    let packageKeywords = baseKeywords.concat(keywords)
-
-    packageKeywords = this.#removeSpacesFromKeywords(packageKeywords)
-    packageKeywords = this.#removeEmptyKeyword(packageKeywords)
-    packageKeywords = this.#removeRepeatedKeywords(packageKeywords)
-
-    return packageKeywords
-  }
-
-  /**
-   * @param {string} generatorName The name of the generator.
-   * @param {string} [replacer] The String used to replace the whitespaces.
-   * @returns The name of the generator with replaced whitespaces.
-   */
-  #replaceWhiteSpaces(generatorName, replacer = '-') {
-    const generatorNameWithoutWhiteSpaces = generatorName.split(' ')
-    const generatorNameWithReplacedWhiteSpaces =
-      generatorNameWithoutWhiteSpaces.join(replacer)
-
-    return generatorNameWithReplacedWhiteSpaces
-  }
-
-  /**
-   * If the generator name does not contain the required prefix, this prefix is
-   * added.
-   *
-   * @param {Array[string]} generatorNameComponents Array that contains the
-   *   components of the generator name.
-   * @returns {Array[string]} The components of the generator name with the
-   *   required prefix.
-   */
-  #addGeneratorPrefix(generatorNameComponents) {
-    const prefix = 'generator'
-    const start = 0
-
-    if (generatorNameComponents.indexOf(prefix) !== start) {
-      generatorNameComponents.unshift(prefix)
-    }
-
-    return generatorNameComponents
-  }
-
-  /**
-   * @param {string} generatorName The generator name entered by the user.
-   * @returns {string} The formated generator name.
-   */
-  #formatGeneratorName(generatorName) {
-    generatorName = this.#replaceWhiteSpaces(generatorName)
-
-    let generatorNameComponents = generatorName.split('-')
-
-    generatorNameComponents = this.#addGeneratorPrefix(generatorNameComponents)
-
-    const formatedGeneratorName = generatorNameComponents.join('-')
-
-    return formatedGeneratorName
   }
 
   async prompting() {
@@ -111,12 +34,6 @@ export default class GeneratorEsmodulesGenerator extends Generator {
     const prompts = promptBuilder.build()
 
     this.answers = await this.prompt(prompts)
-    this.answers.generatorName = this.#formatGeneratorName(
-      this.answers.generatorName,
-    )
-    this.answers.generatorKeywords = this.#formatKeywords(
-      this.answers.generatorKeywords,
-    )
   }
 
   #addGit() {
