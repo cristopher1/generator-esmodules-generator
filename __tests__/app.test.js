@@ -28,9 +28,15 @@ describe('generator-esmodules-generator:app', () => {
         answers.runGitInit = false
         answers.runPackageScripts = false
 
+        // Call the filter functions used into the question objects.
+        const options = {
+          callback: (answer, { question }) =>
+            question.filter ? question.filter(answer) : answer,
+        }
+
         await helpers
           .run(path.join(__dirname, '../generators/app'))
-          .withPrompts(answers)
+          .withAnswers(answers, options)
       })
       describe('package.json', () => {
         it('Should create a package.json adding the required fields', () => {
