@@ -1,17 +1,37 @@
 export class PromptBuilder {
-  #options = {}
+  #generatorNameFormatter
+  #keywordFormatter
+  #options
+
+  constructor(generatorNameFormatter, keywordFormatter) {
+    this.#generatorNameFormatter = generatorNameFormatter
+    this.#keywordFormatter = keywordFormatter
+    this.#options = {}
+  }
 
   setOptions(options) {
     this.#options = options
   }
 
   build() {
+    const generatorNameFormatter = this.#generatorNameFormatter
+    const keywordFormatter = this.#keywordFormatter
+
+    const formatGeneratorName = (input) => {
+      return generatorNameFormatter.format(input)
+    }
+
+    const formatKeywords = (input) => {
+      return keywordFormatter.format(input)
+    }
+
     return [
       {
         type: 'input',
         name: 'generatorName',
         message: "Project's name",
         default: this.#options.appname,
+        filter: formatGeneratorName,
       },
       {
         type: 'input',
@@ -54,6 +74,7 @@ export class PromptBuilder {
         name: 'generatorKeywords',
         message: 'Package keywords (comman to split)',
         default: '',
+        filter: formatKeywords,
       },
       {
         type: 'input',
