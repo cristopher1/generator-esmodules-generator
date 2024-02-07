@@ -295,6 +295,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
     const scriptArguments = [
       ['init'],
       ['documentation:create'],
+      ['format:fix'],
       ['test'],
       ['build'],
     ]
