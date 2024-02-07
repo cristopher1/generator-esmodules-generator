@@ -1,10 +1,8 @@
 export class PromptBuilder {
-  #generatorNameFormatter
   #keywordFormatter
   #options
 
-  constructor(generatorNameFormatter, keywordFormatter) {
-    this.#generatorNameFormatter = generatorNameFormatter
+  constructor(keywordFormatter) {
     this.#keywordFormatter = keywordFormatter
     this.#options = {}
   }
@@ -14,12 +12,7 @@ export class PromptBuilder {
   }
 
   build() {
-    const generatorNameFormatter = this.#generatorNameFormatter
     const keywordFormatter = this.#keywordFormatter
-
-    const formatGeneratorName = (input) => {
-      return generatorNameFormatter.format(input)
-    }
 
     const formatKeywords = (input) => {
       return keywordFormatter.format(input)
@@ -28,59 +21,58 @@ export class PromptBuilder {
     return [
       {
         type: 'input',
-        name: 'generatorName',
-        message: "Project's name",
-        default: this.#options.appname,
-        filter: formatGeneratorName,
-      },
-      {
-        type: 'input',
         name: 'generatorDescription',
         message: "Project's description",
-        default: '',
+        when: () =>
+          !this.#options.onlyTerminal && !this.#options.generatorDescription,
       },
       {
         type: 'input',
         name: 'generatorHomePageUrl',
         message: 'Project homepage url',
-        default: '',
+        when: () =>
+          !this.#options.onlyTerminal && !this.#options.generatorHomePageUrl,
       },
       {
         type: 'input',
         name: 'authorName',
         message: "Author's name",
-        default: '',
+        when: () => !this.#options.onlyTerminal && !this.#options.authorName,
       },
       {
         type: 'input',
         name: 'authorEmail',
         message: "Author's email",
-        default: '',
+        when: () => !this.#options.onlyTerminal && !this.#options.authorEmail,
       },
       {
         type: 'input',
         name: 'authorHomepage',
         message: "Author's homepage",
-        default: '',
+        when: () =>
+          !this.#options.onlyTerminal && !this.#options.authorHomepage,
       },
       {
         type: 'input',
         name: 'urlRepository',
         message: 'Github repository url',
-        default: '',
+        when: () => !this.#options.onlyTerminal && !this.#options.urlRepository,
       },
       {
         type: 'input',
         name: 'generatorKeywords',
         message: 'Package keywords (comman to split)',
         default: '',
+        when: () =>
+          !this.#options.onlyTerminal && this.#options.generatorKeywords === '',
         filter: formatKeywords,
       },
       {
         type: 'input',
         name: 'generatorWebsite',
         message: 'Your generator website',
-        default: '',
+        when: () =>
+          !this.#options.onlyTerminal && !this.#options.generatorWebsite,
       },
       {
         type: 'list',
@@ -97,7 +89,7 @@ export class PromptBuilder {
             value: false,
           },
         ],
-        default: true,
+        when: () => !this.#options.onlyTerminal && !this.#options.runGitInit,
       },
       {
         type: 'list',
@@ -113,7 +105,8 @@ export class PromptBuilder {
             value: false,
           },
         ],
-        default: true,
+        when: () =>
+          !this.#options.onlyTerminal && !this.#options.runPackageScripts,
       },
       {
         type: 'list',
@@ -129,7 +122,7 @@ export class PromptBuilder {
             value: false,
           },
         ],
-        default: false,
+        when: () => !this.#options.onlyTerminal && !this.#options.license,
       },
     ]
   }
