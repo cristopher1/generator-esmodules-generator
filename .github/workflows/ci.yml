@@ -78,7 +78,7 @@ jobs:
 
       - name: create a new generator
         working-directory: ../generator_test
-        run: yo esmodules-generator test --onlyTerminal
+        run: yo esmodules-generator test --onlyTerminal --runGitInit --runPackageScripts
 
       - name: run linter, formatter and tests
         working-directory: ../generator_test
