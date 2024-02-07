@@ -14,10 +14,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 describe('generator-esmodules-generator:app', () => {
   describe('create a yeoman generator', () => {
     describe('scaffold a full package using ES Modules', () => {
+      const generatorName = 0
+      const args = []
       const answers = {}
 
       beforeAll(async () => {
-        answers.generatorName = faker.string.sample()
+        args[generatorName] = faker.string.sample()
+
         answers.generatorDescription = faker.string.sample()
         answers.generatorHomePageUrl = faker.internet.url()
         answers.authorName = faker.person.fullName()
@@ -36,13 +39,14 @@ describe('generator-esmodules-generator:app', () => {
 
         await helpers
           .run(path.join(__dirname, '../generators/app'))
+          .withArguments(args)
           .withAnswers(answers, options)
       })
       describe('package.json', () => {
         it('Should create a package.json adding the required fields', () => {
           // Assert
           assert.JSONFileContent('package.json', {
-            name: `generator-${answers.generatorName}`,
+            name: `generator-${args[generatorName]}`,
             version: '0.1.0',
             description: answers.generatorDescription,
             type: 'module',
@@ -220,9 +224,6 @@ describe('generator-esmodules-generator:app', () => {
         })
 
         it('Should generate the index.test.js file with the correct content', () => {
-          // Arrange
-          const { generatorName } = answers
-
           // Assert
           assert.fileContent([
             ['__tests__/index.test.js', "import path, { dirname } from 'path'"],
@@ -236,7 +237,7 @@ describe('generator-esmodules-generator:app', () => {
             ['__tests__/index.test.js', "import helpers from 'yeoman-test'"],
             [
               '__tests__/index.test.js',
-              `describe('generator-${generatorName}:app', () => {`,
+              `describe('generator-${args[generatorName]}:app', () => {`,
             ],
             ['__tests__/index.test.js', "describe('create a project', () => {"],
             [
