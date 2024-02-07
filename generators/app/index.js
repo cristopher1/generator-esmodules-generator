@@ -3,13 +3,109 @@ import chalk from 'chalk'
 import yosay from 'yosay'
 import { GeneratorProvider } from './generator_components/GeneratorProvider.js'
 import { PromptBuilder } from './generator_components/PromptBuilder.js'
+import { GeneratorNameFormatter } from './generator_components/formatter/generatorNameFormatter.js'
+import { KeywordFormatter } from './generator_components/formatter/keywordFormatter.js'
 
 export default class GeneratorEsmodulesGenerator extends Generator {
   #promptBuilder
   #generatorProvider
+  #generatorNameFormatter
+  #keywordFormatter
+
+  constructor(args, opts) {
+    super(args, opts)
+
+    this.argument('generatorName', {
+      type: String,
+      description: 'Name of the generator',
+      required: true,
+    })
+
+    this.option('onlyTerminal', {
+      type: Boolean,
+      description:
+        'If this option is used, the yeoman prompts will not be used when there are missing options. For default this option is not used',
+      default: false,
+      required: false,
+    })
+
+    this.option('generatorDescription', {
+      type: String,
+      description: 'Description used into package.json',
+      required: false,
+    })
+
+    this.option('generatorKeywords', {
+      type: String,
+      description: 'Generator keywords (comman to split)',
+      default: '',
+      required: false,
+    })
+
+    this.option('license', {
+      type: String,
+      description:
+        'Same lincese accepted by generator-license, for example: Apache-2.0, MIT, MPL-2.0 BSD-2-Clause-FreeBSD, BSD-3-Clause, ISC, etc',
+      required: false,
+    })
+
+    this.option('authorName', {
+      type: String,
+      description: "Author's name",
+      required: false,
+    })
+
+    this.option('authorEmail', {
+      type: String,
+      description: "Author's email",
+      required: false,
+    })
+
+    this.option('authorHomepage', {
+      type: String,
+      description: "Author's homepage",
+      required: false,
+    })
+
+    this.option('urlRepository', {
+      type: String,
+      description: 'Github repository url',
+      required: false,
+    })
+
+    this.option('generatorWebsite', {
+      type: String,
+      description: 'Project homepage url',
+      required: false,
+    })
+
+    this.option('generatorHomePageUrl', {
+      type: String,
+      description: 'Project homepage url',
+      required: false,
+    })
+
+    this.option('runGitInit', {
+      type: Boolean,
+      description:
+        'Do you want to run git init automatically, then installing the dependencies?',
+      default: false,
+      required: false,
+    })
+
+    this.option('runPackageScripts', {
+      type: Boolean,
+      description:
+        'Do you want to automatically run the scripts that configure the package, then installing the dependencies?',
+      default: false,
+      required: false,
+    })
+  }
 
   initializing() {
-    this.#promptBuilder = new PromptBuilder()
+    this.#generatorNameFormatter = new GeneratorNameFormatter()
+    this.#keywordFormatter = new KeywordFormatter()
+    this.#promptBuilder = new PromptBuilder(this.#keywordFormatter)
     this.#generatorProvider = new GeneratorProvider()
   }
 
@@ -25,10 +121,35 @@ export default class GeneratorEsmodulesGenerator extends Generator {
       ),
     )
 
-    promptBuilder.setOptions({ appname: this.appname })
+    promptBuilder.setOptions({ appname: this.appname, ...this.options })
     const prompts = promptBuilder.build()
 
-    this.answers = await this.prompt(prompts)
+    const answers = await this.prompt(prompts)
+
+    this.answers = {
+      generatorName: this.#generatorNameFormatter.format(
+        this.options.generatorName,
+      ),
+      generatorDescription:
+        this.options.generatorDescription || answers.generatorDescription || '',
+      generatorHomePageUrl:
+        this.options.generatorHomePageUrl || answers.generatorHomePageUrl || '',
+      authorName: this.options.authorName || answers.authorName || '',
+      authorEmail: this.options.authorEmail || answers.authorEmail || '',
+      authorHomepage:
+        this.options.authorHomepage || answers.authorHomepage || '',
+      urlRepository: this.options.urlRepository || answers.urlRepository || '',
+      generatorKeywords:
+        answers.generatorKeywords ||
+        this.#keywordFormatter.format(this.options.generatorKeywords),
+      generatorWebsite:
+        this.options.generatorWebsite || answers.generatorWebsite || '',
+      runGitInit: this.options.runGitInit || answers.runGitInit,
+      runPackageScripts:
+        this.options.runPackageScripts || answers.runPackageScripts,
+      includeLicense: answers.includeLicense || this.options.license,
+      license: this.options.license,
+    }
   }
 
   #addGit() {
@@ -100,60 +221,11 @@ export default class GeneratorEsmodulesGenerator extends Generator {
         name: this.answers.authorName,
         email: this.answers.authorEmail,
         website: this.answers.authorHomepage,
+        license: this.answers.license,
       }
 
       this.#addLicense(licenseOptions)
     }
-  }
-
-  #removeEmptyKeyword(keywords) {
-    return keywords.filter((element) => {
-      return element !== ''
-    })
-  }
-
-  #removeSpacesFromKeywords(keywords) {
-    return keywords.map((elemenet) => {
-      return elemenet.trim()
-    })
-  }
-
-  #removeRepeatedKeywords(keywords) {
-    const uniqueKeywords = new Set(keywords)
-    return [...uniqueKeywords]
-  }
-
-  /**
-   * @param {string} generatorKeywords Keywords entered by the user
-   * @returns {Array[string]} Keywords used into package.json
-   */
-  #formatKeywords(generatorKeywords) {
-    const baseKeywords = ['yeoman-generator']
-    const keywords = generatorKeywords.split(',')
-    let packageKeywords = baseKeywords.concat(keywords)
-    packageKeywords = this.#removeSpacesFromKeywords(packageKeywords)
-    packageKeywords = this.#removeEmptyKeyword(packageKeywords)
-    packageKeywords = this.#removeRepeatedKeywords(packageKeywords)
-
-    return packageKeywords
-  }
-
-  /**
-   * @param {string} generatorName The generator name entered by the user
-   * @returns {string} The formated generator name
-   */
-  #formatGeneratorName(generatorName) {
-    const prefix = 'generator'
-    const start = 0
-    const components = generatorName.split('-')
-    let formatedGeneratorName = generatorName
-
-    if (components.indexOf(prefix) !== start) {
-      components.unshift(prefix)
-      formatedGeneratorName = components.join('-')
-    }
-
-    return formatedGeneratorName
   }
 
   writing() {
@@ -173,7 +245,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
       this.destinationPath('package.json'),
     )
     this.packageJson.merge({
-      name: this.#formatGeneratorName(this.answers.generatorName),
+      name: this.answers.generatorName,
       description: this.answers.generatorDescription,
       type: this.answers.packageType,
       author: {
@@ -189,7 +261,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
           ? `${this.answers.urlRepository}/issues`
           : '',
       },
-      keywords: this.#formatKeywords(this.answers.generatorKeywords),
+      keywords: this.answers.generatorKeywords,
       homepage: this.answers.generatorWebsite,
     })
   }
@@ -223,6 +295,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
     const scriptArguments = [
       ['init'],
       ['documentation:create'],
+      ['format:fix'],
       ['test'],
       ['build'],
     ]

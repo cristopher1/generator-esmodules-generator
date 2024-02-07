@@ -11,42 +11,78 @@ on:
       - development
 
 jobs:
-  lint:
+  test_and_build:
+    name: Test the source code and build the generator-esmodules-generator generator
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: npm
-          cache-dependency-path: package-lock.json
-      - name: install dependencies
-        run: npm install
-      - name: run linter
-        run: npm run lint
-  format:
+          node-version: 20.x
+
+      - name: install dependencies using package-lock.json
+        run: npm ci
+
+      - name: run linter, formatter and unit tests
+        run: |
+          npm run lint
+          npm run format
+          npm run test
+
+      - name: build the dist folder
+        run: npm run build
+
+      - name: save artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-generator-esmodules-generator
+          path: |
+            dist
+            LICENSE
+            README.md
+            package.json
+          retention-days: 1
+
+  create_generator:
+    name: Test a generator created by generator-esmodules-generator generator
+    needs: test_and_build
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['>=18.17.0', '20.x']
     steps:
-      - uses: actions/checkout@v4
+      - name: download dist generator-esmodules-generator generator
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-generator-esmodules-generator
+
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: npm
-          cache-dependency-path: package-lock.json
-      - name: install dependencies
+          node-version: ${{ matrix.node-version }}
+
+      - name: print node-version
+        run: echo ${{ matrix.node-version }}
+
+      - name: install yeoman
+        run: npm install -g yo
+
+      - name: install dependencies, it does not use the package-lock.json file
         run: npm install
-      - name: run formatter
-        run: npm run format
-  tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: npm
-          cache-dependency-path: package-lock.json
-      - name: install dependencies
-        run: npm install
-      - name: run tests
-        run: npm run test
+
+      - name: link the generator
+        run: npm link
+
+      - name: create a new folder
+        working-directory: ../
+        run: mkdir -p generator_test
+
+      - name: create a new generator
+        working-directory: ../generator_test
+        run: yo esmodules-generator test --onlyTerminal --runGitInit --runPackageScripts
+
+      - name: run linter, formatter and tests
+        working-directory: ../generator_test
+        run: |
+          npm run lint
+          npm run format
+          npm run test
