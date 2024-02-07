@@ -107,7 +107,7 @@ describe('generator-esmodules-generator:app', () => {
       })
 
       describe('babel', () => {
-        it('Should generate the babel.config.json file that contains the configuration for commonjs', () => {
+        it('Should generate the babel.config.json file that contains the configuration for ES modules', () => {
           // Assert
           assert.JSONFileContent('babel.config.json', {
             env: {
