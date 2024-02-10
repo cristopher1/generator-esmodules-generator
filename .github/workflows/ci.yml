@@ -1,4 +1,4 @@
-# Workflow based in lint, format and tests of the source code
+# Workflow to use continuous integration
 
 name: CI
 
