@@ -45,11 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: test_and_build
     steps:
-      - name: download the distributable generator-esmodules-generator generator
-        uses: actions/download-artifact@v4
-        with:
-          name: distributable-generator-esmodules-generator
-
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
@@ -58,9 +54,16 @@ jobs:
         run: npm link
 
       - name: obtain the version of generator-esmodules-generator
+        id: get-tag-name
         run: echo "GENERATOR_ESMODULES_GENERATOR_VERSION=$(npm view generator-esmodules-generator version)" >> "$GITHUB_OUTPUT"
 
-      - name: create and push a new tag
-        run: |
-          git tag $GENERATOR_ESMODULES_GENERATOR_VERSION
-          git push origin $GENERATOR_ESMODULES_GENERATOR_VERSION
+      - name: create a new release
+        uses: actions/create-release@1.1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GENERATOR_ESMODULES_GENERATOR_VERSION: ${{ steps.get-tag-name.outputs.GENERATOR_ESMODULES_GENERATOR_VERSION }}
+        with:
+          tag_name: $GENERATOR_ESMODULES_GENERATOR_VERSION
+          release_name: Release $GENERATOR_ESMODULES_GENERATOR_VERSION
+          body_path: README.md
+          draft: true
