@@ -58,7 +58,7 @@ jobs:
         run: echo "GENERATOR_ESMODULES_GENERATOR_VERSION=$(npm view generator-esmodules-generator version)" >> "$GITHUB_OUTPUT"
 
       - name: create a new release
-        uses: actions/create-release@1.1.4
+        uses: actions/create-release@v1.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GENERATOR_ESMODULES_GENERATOR_VERSION: ${{ steps.get-tag-name.outputs.GENERATOR_ESMODULES_GENERATOR_VERSION }}
