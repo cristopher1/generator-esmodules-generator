@@ -101,7 +101,7 @@
     "build:clean": "rimraf dist",
     "build:tsc": "tsc",
     "build:es6": "cross-env NODE_ENV=buildESmodules npx babel --config-file ./babel.config.json generators --out-dir dist/generators --ignore '/**/templates/' --copy-files --include-dotfiles",
-    "prebuild": "npm run lint:build-stage && npm run format:build-stage:fix && npm run build:clean",
+    "prebuild": "npm run build:clean",
     "build": "npm run build:tsc && npm run build:es6",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
     "commitlint": "npx commitlint --edit",
