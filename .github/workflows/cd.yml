@@ -55,8 +55,9 @@ jobs:
 
       - name: create a new tag
         uses: Klemensas/action-autotag@stable
-        with:
+        env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+        with:
           tag_prefix: 'v'
 
       - name: create a new release
