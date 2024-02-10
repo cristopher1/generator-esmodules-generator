@@ -54,6 +54,7 @@ jobs:
           node-version: 20.x
 
       - name: create a new tag
+        id: tag
         uses: Klemensas/action-autotag@stable
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
@@ -64,7 +65,8 @@ jobs:
         uses: actions/create-release@v1.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.tag.outputs.tagname != '' && steps.tag.outputs.tagname || format('v{0}', steps.tag.outputs.version) }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: $TAG
+          release_name: Release $TAG
           body_path: RELEASE_NOTES.md
