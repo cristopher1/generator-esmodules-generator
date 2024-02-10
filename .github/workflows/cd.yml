@@ -50,20 +50,18 @@ jobs:
         with:
           node-version: 20.x
 
-      - name: link the generator-esmodules-generator generator
-        run: npm link
-
-      - name: obtain the version of generator-esmodules-generator
-        id: get-tag-name
-        run: echo "GENERATOR_ESMODULES_GENERATOR_VERSION=$(npm view generator-esmodules-generator version)" >> "$GITHUB_OUTPUT"
+      - name: create a new tag
+        uses: Klemensas/action-autotag@stable
+        with:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+          tag_prefix: 'v'
 
       - name: create a new release
         uses: actions/create-release@v1.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GENERATOR_ESMODULES_GENERATOR_VERSION: ${{ steps.get-tag-name.outputs.GENERATOR_ESMODULES_GENERATOR_VERSION }}
         with:
-          tag_name: $GENERATOR_ESMODULES_GENERATOR_VERSION
-          release_name: Release $GENERATOR_ESMODULES_GENERATOR_VERSION
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
           body_path: README.md
           draft: true
