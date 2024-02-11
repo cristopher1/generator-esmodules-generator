@@ -45,7 +45,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
     this.option('license', {
       type: String,
       description:
-        'Same lincese accepted by generator-license, for example: Apache-2.0, MIT, MPL-2.0 BSD-2-Clause-FreeBSD, BSD-3-Clause, ISC, etc',
+        'Any lincese accepted by generator-license, for example: Apache-2.0, MIT, MPL-2.0 BSD-2-Clause-FreeBSD, BSD-3-Clause, ISC, etc',
       required: false,
     })
 
@@ -70,12 +70,6 @@ export default class GeneratorEsmodulesGenerator extends Generator {
     this.option('urlRepository', {
       type: String,
       description: 'Github repository url',
-      required: false,
-    })
-
-    this.option('generatorWebsite', {
-      type: String,
-      description: 'Project homepage url',
       required: false,
     })
 
@@ -148,7 +142,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
       runPackageScripts:
         this.options.runPackageScripts || answers.runPackageScripts,
       includeLicense: answers.includeLicense || this.options.license,
-      license: this.options.license,
+      license: this.options.license || 'UNLICENSED',
     }
   }
 
@@ -262,7 +256,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
           : '',
       },
       keywords: this.answers.generatorKeywords,
-      homepage: this.answers.generatorWebsite,
+      homepage: this.answers.generatorHomePageUrl,
     })
   }
 
