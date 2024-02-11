@@ -211,7 +211,7 @@ The more important scripts added into the package.json created by this generator
 - `"lint:build-stage"` and `"lint:build-stage:fix"`: similar to `"lint"` and `"lint:fix"`. They are used when the `npm run build` is called.
 - `"build:tsc"`: Generates .d.ts files using the TypeScript compilator. It is used when the `npm run build` is called.
 - `"build:es6"`: Transpiles the source code to es6 using babel.
-- `"build"`: Generates the dist folder that contains the generators folder (it contains the source code transpiled to es6) and types folder (it contains the declaration files). if you want to manually test your generator you should use ````npm link``` and ```npm run build```. See [yeoman Running the generator] (https://yeoman.io/authoring/)
+- `"build"`: Generates the dist folder that contains the generators folder (it contains the source code transpiled to es6) and types folder (it contains the declaration files). If you want to manually test your generator you should use ```npm link``` and ```npm run build```. See [yeoman Running the generator](https://yeoman.io/authoring/)
 - `"prepublishOnly"`: Used before publishing your package using `npm publish`. Runs `npm run build`.
 - `"test"`: Runs the tests using jest.
 - `"commitlint"`: Runs commitlint. It is used into .husky/commit-msg file. It is called by the commit-msg hook. See [git hook](https://www.atlassian.com/git/tutorials/git-hooks#:~:text=The%20commit%2Dmsg%20hook%20is,file%20that%20contains%20the%20message.).
