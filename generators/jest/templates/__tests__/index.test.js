@@ -14,9 +14,27 @@ describe('<%- generatorName %>:app', () => {
     beforeAll(async () => {
       answers.projectName = faker.string.sample()
 
+      /**
+       * Add options to withAnswers, for example: Use a callback function to
+       * trigger filter functions used in question objects.
+       */
+      const options = {
+        /**
+         * This function is called by withAnswers for each answer.
+         *
+         * @param {any} answer User entered answer.
+         * @param {Object} param
+         * @param {any} param.question The question associated with the answer.
+         * @param {any} param.answers All user entered answers.
+         * @returns
+         */
+        callback: (answer, { question, answers }) =>
+          question.filter ? question.filter(answer) : answer,
+      }
+
       await helpers
         .run(path.join(__dirname, '../generators/app'))
-        .withPrompts(answers)
+        .withAnswers(answers, options)
     })
 
     it('Should create a index.js file', () => {
