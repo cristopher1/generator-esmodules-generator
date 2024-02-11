@@ -7,15 +7,15 @@
 - In tests folder: The withPrompts method is replaced by withAnswers method.
 - Generator-esmodules-generator receives terminal arguments and options. Example:
 
-  ```yo generator-esmodules-generator generator_test --license=MIT```
+  ```yo esmodules-generator generator_test --license=MIT```
 
 - The question 'Project's name' (generator name) was deleted. Now Project's name is a terminal argument. Example:
 
-  ```yo generator-esmodules-generator generator_name```
+  ```yo esmodules-generator generator_name```
   
 - If you want to use only terminal, you should use the option --onlyTerminal. This option avoid use the yeoman prompt. Example:
 
-  ```yo generator-esmodules-generator generator_test --onlyTerminal```
+  ```yo esmodules-generator generator_test --onlyTerminal```
 
 **Features added in version 0.2.0:**
 
