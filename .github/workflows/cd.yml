@@ -64,7 +64,8 @@ jobs:
     needs: release
     environment: publish
     steps:
-      - uses: actions/download-artifact@v4
+      - name: descargar generator-esmodules-generator distribuible
+        uses: actions/download-artifact@v4
         with:
           name: distributable-generator-esmodules-generator
 
@@ -72,6 +73,7 @@ jobs:
         with:
           node-version: 20.x
 
-      - uses: JS-DevTools/npm-publish@v3
+      - name: publicar generator-esmodules-generator en npm
+        uses: JS-DevTools/npm-publish@v3
         with:
           token: ${{ secrets.NPM_TOKEN }}
