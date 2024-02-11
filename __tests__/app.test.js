@@ -30,6 +30,7 @@ describe('generator-esmodules-generator:app', () => {
         answers.generatorWebsite = faker.internet.url()
         answers.runGitInit = false
         answers.runPackageScripts = false
+        answers.includeLicense = 'no'
 
         // Call the filter functions used into the question objects.
         const options = {
