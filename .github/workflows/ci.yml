@@ -6,9 +6,11 @@ on:
   push:
     branches:
       - development
+      - main
   pull_request:
     branches:
       - development
+      - main
 
 jobs:
   test_and_build:
