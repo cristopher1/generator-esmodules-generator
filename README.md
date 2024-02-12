@@ -1,6 +1,6 @@
 <h1 align="center">Welcome to generator-esmodules-generator 👋</h1>
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-0.2.0-blue.svg?cacheSeconds=2592000" />
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
   <a href="https://github.com/cristopher1/generator-esmodules-generator#readme" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
@@ -14,15 +14,11 @@
 
 > Yeoman generator to create yeoman generators based in ES Modules.
 
+### What's changed? See [generator-esmodules-generator releases](https://github.com/cristopher1/generator-esmodules-generator/releases)
+
 ### 🏠 [Homepage](https://github.com/cristopher1/generator-esmodules-generator)
 
 The `generator-esmodules-generator` provides a structure to create a yeoman generator using ES Modules.
-
-**Features added in version 0.2.0:**
-
-- The generator name is verified. The prefix generator- is added automatically to the generator name.
-- The keyword 'yeoman-generator' is added automatically in package.json.
-- The generator created by generator-esmodules-generator contains the version 0.1.0 in package.json.
 
 The structure created by this generator includes:
 
@@ -48,6 +44,7 @@ Example of a generator created by `generator-esmodules-generator`:
 
 - [Installation](#installation)
 - [Prerequisites](#prerequisites)
+- [Arguments and options](#arguments-and-options)
 - [Generators included](#generators-included)
 - [The configuration files](#configuration-files)
 - [The question: Do you want to automatically run the scripts that configure the package, then installing the dependencies?](#configuring-the-project-automatically)
@@ -70,7 +67,7 @@ npm install -g generator-esmodules-generator
 Then generate your new project:
 
 ```bash
-yo esmodules-generator
+yo esmodules-generator generator_name
 ```
 
 ## <a id="prerequisites"></a> Prerequisites
@@ -78,14 +75,40 @@ yo esmodules-generator
 First, you must create a folder, then you enter it using the terminal. Finally you runs.
 
 ```bash
-yo esmodules-generator
+yo esmodules-generator generator_test
 ```
 
 Example:
 
 ```console
-PS C:\Users\...\generator_es6> yo esmodules-generator
+PS C:\Users\...\generator_es6> yo esmodules-generator generator_test
 ```
+
+## <a id="arguments-and-options"></a> Arguments and options
+
+The generator-esmodules-generator include only an argument called **generatorName** and it is required:
+
+For example: If you want to create a new generator called generator_test (generatorName = generator_test), you should use:
+
+```bash
+yo esmodules-generator generator_test
+```
+
+The generator-esmodules-generator include various options, these are:
+
+| option               |  value  |  default   | description                                                                                                                   | example                                                                                  |
+| :------------------- | :-----: | :--------: | :---------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- |
+| onlyTerminal         | Boolean |   false    | If this option is used, the yeoman prompts will not be used when there are missing options.                                   | `yo esmodules-generator generator_name --onlyTerminal`                                   |
+| generatorDescription | String  |     ''     | Description used into package.json                                                                                            | `yo esmodules-generator generator_name --generatorDescription=description`               |
+| generatorKeywords    | String  |     ''     | Generator keywords (comman to split)                                                                                          | `yo esmodules-generator generator_name --generatorKeywords=keyword1,keyword2,keyword3`   |
+| license              | String  | UNLICENDED | Any lincese accepted by generator-license, for example: Apache-2.0, MIT, MPL-2.0 BSD-2-Clause-FreeBSD, BSD-3-Clause, ISC, etc | `yo esmodules-generator generator_name --license=MIT`                                    |
+| authorName           | String  |     ''     | Author's name                                                                                                                 | `yo esmodules-generator generator_name --authorName=author`                              |
+| authorEmail          | String  |     ''     | Author's email                                                                                                                | `yo esmodules-generator generator_name --authorEmail=author@gmail.com`                   |
+| authorHomepage       | String  |     ''     | Author's homepage                                                                                                             | `yo esmodules-generator generator_name --authorHomepage=www.authorhomepage.com`          |
+| urlRepository        | String  |     ''     | Github repository url                                                                                                         | `yo esmodules-generator generator_name --urlRepository=urlrepository`                    |
+| generatorHomePageUrl | String  |     ''     | Project homepage url                                                                                                          | `yo esmodules-generator generator_name --generatorHomePageUrl=www.generatorHomePage.com` |
+| runGitInit           | Boolean |   false    | Run git init automatically, then installing the dependencies                                                                  | `yo esmodules-generator generator_name --runGitInit`                                     |
+| runPackageScripts    | Boolean |   false    | Run the scripts that configure the package, then installing the dependencies                                                  | `yo esmodules-generator generator_name --runPackageScripts`                              |
 
 ## <a id="generators-included"></a> Generators included
 
@@ -154,8 +177,6 @@ The configuration files included are:
 - Prettier: `.prettierignore` (the files and directories ignored by prettier) and `.prettierrc.json` (configuration used by prettier).
 - Babel: `babel.config.json` (configuration used by babel):
 
-  - The `env.buildCommonjs` contains the configuration used to transpile the source code to es5.
-
   - The `env.buildESmodules` contains the configuration used to transpile the source code to es6.
 
 - Commitlint: `commitlint.config.js` (configuration used by commitlint).
@@ -170,6 +191,7 @@ When you selects the true value, the following scripts ubicated in the package.j
 
 - `init`
 - `documentation:create`
+- `format:fix`
 - `test`
 - `build`
 
@@ -189,7 +211,7 @@ The more important scripts added into the package.json created by this generator
 - `"lint:build-stage"` and `"lint:build-stage:fix"`: similar to `"lint"` and `"lint:fix"`. They are used when the `npm run build` is called.
 - `"build:tsc"`: Generates .d.ts files using the TypeScript compilator. It is used when the `npm run build` is called.
 - `"build:es6"`: Transpiles the source code to es6 using babel.
-- `"build"`: Generates the dist folder that contains the generators folder (it contains the source code transpiled to es6) and types folder (it contains the declaration files).
+- `"build"`: Generates the dist folder that contains the generators folder (it contains the source code transpiled to es6) and types folder (it contains the declaration files). If you want to manually test your generator you should use `npm link` and `npm run build`. See [yeoman Running the generator](https://yeoman.io/authoring/)
 - `"prepublishOnly"`: Used before publishing your package using `npm publish`. Runs `npm run build`.
 - `"test"`: Runs the tests using jest.
 - `"commitlint"`: Runs commitlint. It is used into .husky/commit-msg file. It is called by the commit-msg hook. See [git hook](https://www.atlassian.com/git/tutorials/git-hooks#:~:text=The%20commit%2Dmsg%20hook%20is,file%20that%20contains%20the%20message.).

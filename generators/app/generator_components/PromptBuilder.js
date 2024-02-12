@@ -68,13 +68,6 @@ export class PromptBuilder {
         filter: formatKeywords,
       },
       {
-        type: 'input',
-        name: 'generatorWebsite',
-        message: 'Your generator website',
-        when: () =>
-          !this.#options.onlyTerminal && !this.#options.generatorWebsite,
-      },
-      {
         type: 'list',
         name: 'runGitInit',
         message:

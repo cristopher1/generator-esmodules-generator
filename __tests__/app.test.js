@@ -27,9 +27,9 @@ describe('generator-esmodules-generator:app', () => {
         answers.authorEmail = faker.internet.email()
         answers.authorHomepage = faker.internet.url()
         answers.urlRepository = faker.internet.url()
-        answers.generatorWebsite = faker.internet.url()
         answers.runGitInit = false
         answers.runPackageScripts = false
+        answers.includeLicense = 'no'
 
         // Call the filter functions used into the question objects.
         const options = {
@@ -101,7 +101,7 @@ describe('generator-esmodules-generator:app', () => {
             bugs: {
               url: `${answers.urlRepository}/issues`,
             },
-            homepage: answers.generatorWebsite,
+            homepage: answers.generatorHomePageUrl,
           })
         })
       })
