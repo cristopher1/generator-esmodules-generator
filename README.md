@@ -14,6 +14,8 @@
 
 > Yeoman generator to create yeoman generators based in ES Modules.
 
+### What's changed? See [generator-esmodules-generator releases](https://github.com/cristopher1/generator-esmodules-generator/releases)
+
 ### 🏠 [Homepage](https://github.com/cristopher1/generator-esmodules-generator)
 
 The `generator-esmodules-generator` provides a structure to create a yeoman generator using ES Modules.
