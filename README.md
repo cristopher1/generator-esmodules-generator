@@ -96,19 +96,19 @@ yo esmodules-generator generator_test
 
 The generator-esmodules-generator include various options, these are:
 
-| option | value | default |                              description                              |                           example                          |
-|:-------|:-----:|:-------:|:----------------------------------------------------------------------|:-----------------------------------------------------------|
-| onlyTerminal | Boolean | false | If this option is used, the yeoman prompts will not be used when there are missing options. | ```yo esmodules-generator generator_name --onlyTerminal``` |
-| generatorDescription | String | '' | Description used into package.json | ```yo esmodules-generator generator_name --generatorDescription=description``` |
-| generatorKeywords | String | '' | Generator keywords (comman to split) | ```yo esmodules-generator generator_name --generatorKeywords=keyword1,keyword2,keyword3```
-| license | String | UNLICENDED | Any lincese accepted by generator-license, for example: Apache-2.0, MIT, MPL-2.0 BSD-2-Clause-FreeBSD, BSD-3-Clause, ISC, etc | ```yo esmodules-generator generator_name --license=MIT``` |
-| authorName | String | '' | Author's name | ```yo esmodules-generator generator_name --authorName=author``` |
-| authorEmail | String | '' | Author's email | ```yo esmodules-generator generator_name --authorEmail=author@gmail.com``` |
-| authorHomepage | String | '' | Author's homepage | ```yo esmodules-generator generator_name --authorHomepage=www.authorhomepage.com``` |
-| urlRepository | String | '' | Github repository url | ```yo esmodules-generator generator_name --urlRepository=urlrepository``` |
-| generatorHomePageUrl | String | '' | Project homepage url | ```yo esmodules-generator generator_name --generatorHomePageUrl=www.generatorHomePage.com``` |
-| runGitInit | Boolean | false | Run git init automatically, then installing the dependencies | ```yo esmodules-generator generator_name --runGitInit``` |
-| runPackageScripts | Boolean | false | Run the scripts that configure the package, then installing the dependencies | ```yo esmodules-generator generator_name --runPackageScripts``` |
+| option               |  value  |  default   | description                                                                                                                   | example                                                                                  |
+| :------------------- | :-----: | :--------: | :---------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- |
+| onlyTerminal         | Boolean |   false    | If this option is used, the yeoman prompts will not be used when there are missing options.                                   | `yo esmodules-generator generator_name --onlyTerminal`                                   |
+| generatorDescription | String  |     ''     | Description used into package.json                                                                                            | `yo esmodules-generator generator_name --generatorDescription=description`               |
+| generatorKeywords    | String  |     ''     | Generator keywords (comman to split)                                                                                          | `yo esmodules-generator generator_name --generatorKeywords=keyword1,keyword2,keyword3`   |
+| license              | String  | UNLICENDED | Any lincese accepted by generator-license, for example: Apache-2.0, MIT, MPL-2.0 BSD-2-Clause-FreeBSD, BSD-3-Clause, ISC, etc | `yo esmodules-generator generator_name --license=MIT`                                    |
+| authorName           | String  |     ''     | Author's name                                                                                                                 | `yo esmodules-generator generator_name --authorName=author`                              |
+| authorEmail          | String  |     ''     | Author's email                                                                                                                | `yo esmodules-generator generator_name --authorEmail=author@gmail.com`                   |
+| authorHomepage       | String  |     ''     | Author's homepage                                                                                                             | `yo esmodules-generator generator_name --authorHomepage=www.authorhomepage.com`          |
+| urlRepository        | String  |     ''     | Github repository url                                                                                                         | `yo esmodules-generator generator_name --urlRepository=urlrepository`                    |
+| generatorHomePageUrl | String  |     ''     | Project homepage url                                                                                                          | `yo esmodules-generator generator_name --generatorHomePageUrl=www.generatorHomePage.com` |
+| runGitInit           | Boolean |   false    | Run git init automatically, then installing the dependencies                                                                  | `yo esmodules-generator generator_name --runGitInit`                                     |
+| runPackageScripts    | Boolean |   false    | Run the scripts that configure the package, then installing the dependencies                                                  | `yo esmodules-generator generator_name --runPackageScripts`                              |
 
 ## <a id="generators-included"></a> Generators included
 
@@ -213,7 +213,7 @@ The more important scripts added into the package.json created by this generator
 - `"lint:build-stage"` and `"lint:build-stage:fix"`: similar to `"lint"` and `"lint:fix"`. They are used when the `npm run build` is called.
 - `"build:tsc"`: Generates .d.ts files using the TypeScript compilator. It is used when the `npm run build` is called.
 - `"build:es6"`: Transpiles the source code to es6 using babel.
-- `"build"`: Generates the dist folder that contains the generators folder (it contains the source code transpiled to es6) and types folder (it contains the declaration files). If you want to manually test your generator you should use ```npm link``` and ```npm run build```. See [yeoman Running the generator](https://yeoman.io/authoring/)
+- `"build"`: Generates the dist folder that contains the generators folder (it contains the source code transpiled to es6) and types folder (it contains the declaration files). If you want to manually test your generator you should use `npm link` and `npm run build`. See [yeoman Running the generator](https://yeoman.io/authoring/)
 - `"prepublishOnly"`: Used before publishing your package using `npm publish`. Runs `npm run build`.
 - `"test"`: Runs the tests using jest.
 - `"commitlint"`: Runs commitlint. It is used into .husky/commit-msg file. It is called by the commit-msg hook. See [git hook](https://www.atlassian.com/git/tutorials/git-hooks#:~:text=The%20commit%2Dmsg%20hook%20is,file%20that%20contains%20the%20message.).
