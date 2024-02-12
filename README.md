@@ -177,8 +177,6 @@ The configuration files included are:
 - Prettier: `.prettierignore` (the files and directories ignored by prettier) and `.prettierrc.json` (configuration used by prettier).
 - Babel: `babel.config.json` (configuration used by babel):
 
-  - The `env.buildCommonjs` contains the configuration used to transpile the source code to es5.
-
   - The `env.buildESmodules` contains the configuration used to transpile the source code to es6.
 
 - Commitlint: `commitlint.config.js` (configuration used by commitlint).
