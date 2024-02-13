@@ -142,7 +142,9 @@ export default class GeneratorEsmodulesGenerator extends Generator {
       runPackageScripts:
         this.options.runPackageScripts || answers.runPackageScripts,
       includeLicense: answers.includeLicense || this.options.license,
-      license: this.options.license || 'UNLICENSED',
+      license: this.options.onlyTerminal
+        ? this.options.license || 'NO_LICENSE'
+        : this.options.license,
     }
   }
 
@@ -197,7 +199,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
   }
 
   configuring() {
-    const { includeLicense } = this.answers
+    const { includeLicense, license } = this.answers
 
     this.#addGit()
     this.#addEslint()
@@ -210,7 +212,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
     this.#addJest([this.answers.generatorName])
     this.#addCommitLint()
 
-    if (includeLicense) {
+    if (includeLicense && license !== 'NO_LICENSE') {
       const licenseOptions = {
         name: this.answers.authorName,
         email: this.answers.authorEmail,
