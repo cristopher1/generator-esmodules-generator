@@ -21,6 +21,9 @@ jobs:
       - name: install dependencies using package-lock.json
         run: npm ci
 
+      - name: audit
+        run: npm audit
+
       - name: run linter, formatter and unit tests
         run: |
           npm run lint

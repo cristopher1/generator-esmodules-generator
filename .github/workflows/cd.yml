@@ -20,6 +20,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: audit
+        run: npm audit
+
       - name: run quality check
         run: npm run quality-check
 
