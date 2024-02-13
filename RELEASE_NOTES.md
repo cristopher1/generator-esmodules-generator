@@ -1,5 +1,9 @@
 # Release notes
 
+**Features added in version 1.0.1:**
+
+- Fixed License: For default, license option does not create a license file (default value NO_LICENSE) when the option onlyTerminal is used. The license is created correctly when the questions are answered from the prompt.
+
 **Features added in version 1.0.0:**
 
 - Generator-esmodules-generator is tested with **node >= 18.17.0 and node 20.x in the latest version of Ubuntu.**
