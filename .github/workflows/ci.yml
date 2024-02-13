@@ -10,7 +10,6 @@ on:
   pull_request:
     branches:
       - development
-      - main
 
 jobs:
   test_and_build:
@@ -84,6 +83,9 @@ jobs:
       - name: create a new generator
         working-directory: ../generator_test
         run: yo esmodules-generator test --onlyTerminal --runGitInit --runPackageScripts
+
+      - name: audit
+        run: npm audit
 
       - name: run linter, formatter and tests
         working-directory: ../generator_test
