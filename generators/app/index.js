@@ -1,14 +1,16 @@
 import Generator from 'yeoman-generator'
 import chalk from 'chalk'
 import yosay from 'yosay'
-import { GeneratorProvider } from './generator_components/GeneratorProvider.js'
 import { PromptBuilder } from './generator_components/PromptBuilder.js'
 import { GeneratorNameFormatter } from './generator_components/formatter/generatorNameFormatter.js'
 import { KeywordFormatter } from './generator_components/formatter/keywordFormatter.js'
+import path, { dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export default class GeneratorEsmodulesGenerator extends Generator {
   #promptBuilder
-  #generatorProvider
   #generatorNameFormatter
   #keywordFormatter
 
@@ -100,7 +102,6 @@ export default class GeneratorEsmodulesGenerator extends Generator {
     this.#generatorNameFormatter = new GeneratorNameFormatter()
     this.#keywordFormatter = new KeywordFormatter()
     this.#promptBuilder = new PromptBuilder(this.#keywordFormatter)
-    this.#generatorProvider = new GeneratorProvider()
   }
 
   async prompting() {
@@ -148,69 +149,72 @@ export default class GeneratorEsmodulesGenerator extends Generator {
     }
   }
 
-  #addGit() {
-    const generator = this.#generatorProvider.getGitGenerator()
-    this.composeWith(generator)
+  async #addGit() {
+    const generatorPath = path.resolve(__dirname, '../git/index.js')
+    await this.composeWith(generatorPath)
   }
 
-  #addEslint() {
-    const generator = this.#generatorProvider.getEslintGenerator()
-    this.composeWith(generator)
+  async #addEslint() {
+    const generatorPath = path.resolve(__dirname, '../eslint/index.js')
+    await this.composeWith(generatorPath)
   }
 
-  #addHusky() {
-    const generator = this.#generatorProvider.getHuskyGenerator()
-    this.composeWith(generator)
+  async #addHusky() {
+    const generatorPath = path.resolve(__dirname, '../husky/index.js')
+    await this.composeWith(generatorPath)
   }
 
-  #addLintStaged() {
-    const generator = this.#generatorProvider.getLintStagedGenerator()
-    this.composeWith(generator)
+  async #addLintStaged() {
+    const generatorPath = path.resolve(__dirname, '../lintstaged/index.js')
+    await this.composeWith(generatorPath)
   }
 
-  #addPrettier() {
-    const generator = this.#generatorProvider.getPrettierGenerator()
-    this.composeWith(generator)
+  async #addPrettier() {
+    const generatorPath = path.resolve(__dirname, '../prettier/index.js')
+    await this.composeWith(generatorPath)
   }
 
-  #addTypeScript() {
-    const generator = this.#generatorProvider.getTypeScriptGenerator()
-    this.composeWith(generator)
+  async #addTypeScript() {
+    const generatorPath = path.resolve(__dirname, '../typescript/index.js')
+    await this.composeWith(generatorPath)
   }
 
-  #addBabel() {
-    const generator = this.#generatorProvider.getBabelGenerator()
-    this.composeWith(generator)
+  async #addBabel() {
+    const generatorPath = path.resolve(__dirname, '../babel/index.js')
+    await this.composeWith(generatorPath)
   }
 
-  #addJest(args) {
-    const generator = this.#generatorProvider.getJestGenerator()
-    this.composeWith(generator, args)
+  async #addJest(args) {
+    const generatorPath = path.resolve(__dirname, '../jest/index.js')
+    await this.composeWith(generatorPath, { arguments: args })
   }
 
-  #addCommitLint() {
-    const generator = this.#generatorProvider.getCommitLintGenerator()
-    this.composeWith(generator)
+  async #addCommitLint() {
+    const generatorPath = path.resolve(__dirname, '../commitlint/index.js')
+    await this.composeWith(generatorPath)
   }
 
-  #addLicense(options) {
-    const generator = this.#generatorProvider.getLicenseGenerator()
-    this.composeWith(generator, options)
+  async #addLicense(options) {
+    const generatorPath = path.resolve(
+      __dirname,
+      '../../node_modules/generator-license/app/index.js',
+    )
+    await this.composeWith(generatorPath, options)
   }
 
-  configuring() {
+  async configuring() {
     const { includeLicense, license } = this.answers
 
-    this.#addGit()
-    this.#addEslint()
-    this.#addHusky()
-    this.#addLintStaged()
-    this.#addPrettier()
-    this.#addTypeScript()
+    await this.#addGit()
+    await this.#addEslint()
+    await this.#addHusky()
+    await this.#addLintStaged()
+    await this.#addPrettier()
+    await this.#addTypeScript()
 
-    this.#addBabel()
-    this.#addJest([this.answers.generatorName])
-    this.#addCommitLint()
+    await this.#addBabel()
+    await this.#addJest([this.answers.generatorName])
+    await this.#addCommitLint()
 
     if (includeLicense && license !== 'NO_LICENSE') {
       const licenseOptions = {
@@ -220,7 +224,7 @@ export default class GeneratorEsmodulesGenerator extends Generator {
         license: this.answers.license,
       }
 
-      this.#addLicense(licenseOptions)
+      await this.#addLicense(licenseOptions)
     }
   }
 
