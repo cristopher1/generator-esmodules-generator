@@ -1,8 +1,12 @@
 # Release notes
 
+**Features added in version 1.0.3:**
+
+- Fixed an issue that prevents using generator-esmodules-generator on windows.
+
 **Features added in version 1.0.2:**
 
-- Fixed an issue that could prevent the creation of a new generator.
+- Fixed an issue that could prevent the creation of a new generator. Do not use in windows.
 
 **Features added in version 1.0.1:**
 
